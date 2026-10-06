@@ -72,10 +72,53 @@
     <div class="hdr hdr--desktop force-dark">
       <header class="hdr__bar">
         <div class="hdr__inner">
-          <button type="button" class="hdr__menu js-open-menu" aria-label="Mở menu">
+          <!-- Tablet (768–1023): giữ nút menu drawer -->
+          <button type="button" class="hdr__menu hdr__menu--tablet js-open-menu" aria-label="Mở menu">
             <svg class="i" style="width:32px;height:32px" stroke-width="2.5"><use href="#i-menu"/></svg>
           </button>
-          <button type="button" class="btn-gold js-scroll" data-target="#bang-gia">Bảng Giá Vàng</button>
+
+          <!-- Desktop (>=1024): menu ngang đầy đủ -->
+          <a href="#top" class="hdr__brand js-scroll" data-target="body" aria-label="Hiệu Vàng Ngọc Diệp - Trang chủ">
+            <svg class="i hdr__brand-icon" stroke-width="1.5"><use href="#i-crown"/></svg>
+            <span class="hdr__brand-text">Ngọc Diệp</span>
+          </a>
+          <nav class="topnav" id="topnav" aria-label="Menu chính">
+            <ul class="topnav__list">
+              <li><a href="#top" class="topnav__link js-scroll is-active" data-target="body" data-spy="top">Trang chủ</a></li>
+              <li><a href="#" class="topnav__link">Giới thiệu</a></li>
+              <li><button type="button" class="topnav__link js-open-dialog" data-dialog="dlg-news">Thông báo</button></li>
+              <li><a href="#bang-gia" class="topnav__link js-scroll" data-spy="bang-gia">Bảng giá vàng</a></li>
+              <li class="dd dd--mega">
+                <button type="button" class="topnav__link dd__trigger" aria-expanded="false" aria-haspopup="true">Sản phẩm <svg class="i i-16 chev" stroke-width="2"><use href="#i-chevron-down"/></svg></button>
+                <div class="dd__panel dd__panel--mega" id="mega-products"></div>
+              </li>
+              <li class="dd">
+                <button type="button" class="topnav__link dd__trigger" aria-expanded="false" aria-haspopup="true">Công cụ vàng <svg class="i i-16 chev" stroke-width="2"><use href="#i-chevron-down"/></svg></button>
+                <div class="dd__panel">
+                  <button type="button" class="dd__item js-open-dialog" data-dialog="dlg-alert"><svg class="i i-18" stroke-width="2"><use href="#i-bell"/></svg><span><b>Đặt thông báo giá vàng</b><small>Nhận email khi giá đạt mức mong muốn</small></span></button>
+                  <button type="button" class="dd__item"><svg class="i i-18" stroke-width="2"><use href="#i-calculator"/></svg><span><b>Máy tính giá vàng</b><small>Quy đổi nhanh theo chỉ, lượng</small></span></button>
+                  <a href="#" class="dd__item"><svg class="i i-18" stroke-width="2"><use href="#i-book-open"/></svg><span><b>Sổ Trữ Vàng</b><small>Theo dõi vàng tích trữ của bạn</small></span></a>
+                </div>
+              </li>
+              <li><a href="#lien-he" class="topnav__link js-scroll" data-spy="lien-he">Liên hệ</a></li>
+              <li class="dd">
+                <button type="button" class="topnav__link dd__trigger" aria-expanded="false" aria-haspopup="true">Khác <svg class="i i-16 chev" stroke-width="2"><use href="#i-chevron-down"/></svg></button>
+                <div class="dd__panel dd__panel--right">
+                  <a href="#" class="dd__item"><svg class="i i-18" stroke-width="2"><use href="#i-shield-check"/></svg><span><b>Chính sách bảo mật</b></span></a>
+                  <a href="#" class="dd__item"><svg class="i i-18" stroke-width="2"><use href="#i-smartphone"/></svg><span><b>Hướng dẫn cài đặt APP</b></span></a>
+                  <a href="#bang-gia" class="dd__item js-scroll"><svg class="i i-18" stroke-width="2"><use href="#i-clock"/></svg><span><b>Quản lý giá</b></span></a>
+                </div>
+              </li>
+            </ul>
+          </nav>
+
+          <div class="hdr__right">
+            <form class="hsearch" id="hsearch" role="search">
+              <input type="text" class="hsearch__input" id="hsearch-input" placeholder="Tìm sản phẩm..." aria-label="Tìm kiếm" tabindex="-1" />
+              <button type="button" class="hsearch__btn" id="hsearch-btn" aria-label="Tìm kiếm"><svg class="i i-20" stroke-width="2"><use href="#i-search"/></svg></button>
+            </form>
+            <button type="button" class="btn-gold js-scroll" data-target="#bang-gia">Bảng Giá Vàng</button>
+          </div>
         </div>
       </header>
     </div>

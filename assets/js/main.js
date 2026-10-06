@@ -86,14 +86,33 @@
       b.querySelector('use').setAttribute('href', dark ? '#i-sun' : '#i-moon');
     });
   }
-  $$('.js-theme').forEach(function (b) {
-    b.addEventListener('click', function () {
-      root.classList.toggle('light');
-      store.set('theme-preference', root.classList.contains('light') ? 'light' : 'dark');
-      syncThemeButtons();
+  function applyTheme() {
+    root.classList.toggle('light');
+    store.set('theme-preference', root.classList.contains('light') ? 'light' : 'dark');
+    syncThemeButtons();
+  }
+  // Đổi theme: vùng sáng/tối lan ra theo hình tròn từ điểm click (View Transitions API)
+  function toggleTheme(e) {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!document.startViewTransition || reduce) {
+      applyTheme();
       if (chartLoaded) loadChart(true);
+      return;
+    }
+    var r = e.currentTarget.getBoundingClientRect();
+    var x = e.clientX || r.left + r.width / 2;
+    var y = e.clientY || r.top + r.height / 2;
+    var radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+    var t = document.startViewTransition(applyTheme);
+    t.ready.then(function () {
+      root.animate(
+        { clipPath: ['circle(0px at ' + x + 'px ' + y + 'px)', 'circle(' + radius + 'px at ' + x + 'px ' + y + 'px)'] },
+        { duration: 700, easing: 'cubic-bezier(.4, 0, .2, 1)', pseudoElement: '::view-transition-new(root)' }
+      );
     });
-  });
+    t.finished.then(function () { if (chartLoaded) loadChart(true); });
+  }
+  $$('.js-theme').forEach(function (b) { b.addEventListener('click', toggleTheme); });
   syncThemeButtons();
 
   /* ---------------- TICKER ---------------- */
@@ -572,6 +591,103 @@
     });
   }
 
+  /* ---------------- MENU NGANG DESKTOP ---------------- */
+  function renderMega() {
+    $('#mega-products').innerHTML = MENU_ORDER.map(function (k) {
+      var p = PRODUCTS[k];
+      return '<div class="mega__col">' +
+        '<a href="#" class="mega__thumb js-goto-products"><img src="' + p.img + '" alt="' + p.title + '" loading="lazy" /></a>' +
+        '<a href="#" class="mega__title js-goto-products">' + p.title + '</a>' +
+        '<p class="mega__desc">' + p.desc + '</p>' +
+        '<ul class="mega__list">' + p.children.map(function (c) { return '<li><a href="#" class="js-goto-products">' + c + '</a></li>'; }).join('') + '</ul>' +
+        '<a href="#" class="mega__all js-goto-products">Xem tất cả' + icon('arrow-right') + '</a></div>';
+    }).join('');
+  }
+
+  function initTopnav() {
+    var dds = $$('#topnav .dd');
+    var hoverable = window.matchMedia('(hover: hover) and (pointer: fine)');
+    function setOpen(dd, on) {
+      dd.classList.toggle('is-open', on);
+      dd.querySelector('.dd__trigger').setAttribute('aria-expanded', String(on));
+    }
+    function closeAll(except) { dds.forEach(function (d) { if (d !== except) setOpen(d, false); }); }
+
+    dds.forEach(function (dd) {
+      var trigger = dd.querySelector('.dd__trigger'), timer;
+      trigger.addEventListener('click', function () {
+        var on = !dd.classList.contains('is-open');
+        closeAll(dd);
+        setOpen(dd, on);
+      });
+      dd.addEventListener('mouseenter', function () {
+        if (!hoverable.matches) return;
+        clearTimeout(timer);
+        timer = setTimeout(function () { closeAll(dd); setOpen(dd, true); }, 80);
+      });
+      dd.addEventListener('mouseleave', function () {
+        if (!hoverable.matches) return;
+        clearTimeout(timer);
+        timer = setTimeout(function () { setOpen(dd, false); }, 160);
+      });
+      // Bấm một mục trong dropdown thì đóng lại
+      dd.querySelector('.dd__panel').addEventListener('click', function (e) {
+        if (e.target.closest('a, button')) setOpen(dd, false);
+      });
+      // Bàn phím: mũi tên xuống mở và focus mục đầu
+      trigger.addEventListener('keydown', function (e) {
+        if (e.key !== 'ArrowDown') return;
+        e.preventDefault();
+        closeAll(dd); setOpen(dd, true);
+        var first = dd.querySelector('.dd__panel a, .dd__panel button');
+        if (first) first.focus();
+      });
+    });
+
+    document.addEventListener('click', function (e) { if (!e.target.closest('#topnav .dd')) closeAll(); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      var open = dds.filter(function (d) { return d.classList.contains('is-open'); })[0];
+      if (open) { setOpen(open, false); open.querySelector('.dd__trigger').focus(); }
+    });
+    $('#mega-products').addEventListener('click', function (e) {
+      if (e.target.closest('.js-goto-products')) { e.preventDefault(); smoothTo('.products'); }
+    });
+
+    // Ô tìm kiếm mở rộng
+    var hs = $('#hsearch'), hin = $('#hsearch-input'), hbtn = $('#hsearch-btn');
+    function openSearch() { hs.classList.add('is-open'); hin.tabIndex = 0; setTimeout(function () { hin.focus(); }, 50); }
+    function closeSearch() { hs.classList.remove('is-open'); hin.tabIndex = -1; hin.value = ''; }
+    hbtn.addEventListener('click', function () {
+      if (!hs.classList.contains('is-open')) return openSearch();
+      if (hin.value.trim()) hs.requestSubmit(); else closeSearch();
+    });
+    hs.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var q = hin.value.trim();
+      if (!q) return;
+      closeSearch();
+      smoothTo('.products');
+      toast('Tìm kiếm', 'Kết quả cho “' + q + '”');
+    });
+    hin.addEventListener('keydown', function (e) { if (e.key === 'Escape') { e.stopPropagation(); closeSearch(); hbtn.focus(); } });
+    hin.addEventListener('blur', function () { setTimeout(function () { if (!hin.value.trim() && document.activeElement !== hbtn) closeSearch(); }, 150); });
+
+    // Đánh dấu mục đang xem khi cuộn
+    var spyLinks = $$('#topnav [data-spy]');
+    var sections = spyLinks.map(function (a) { return document.getElementById(a.dataset.spy); });
+    var ticking = false;
+    function spy() {
+      ticking = false;
+      var y = window.scrollY + 120, current = 'top';
+      sections.forEach(function (s) { if (s && s.offsetTop <= y) current = s.id; });
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) current = 'lien-he';
+      spyLinks.forEach(function (a) { a.classList.toggle('is-active', a.dataset.spy === current); });
+    }
+    window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(spy); } }, { passive: true });
+    spy();
+  }
+
   /* ---------------- INIT ---------------- */
   renderTicker();
   renderTables();
@@ -579,5 +695,7 @@
   renderProducts();
   initCarousel();
   renderMenuProducts();
+  renderMega();
+  initTopnav();
   initPrompts();
 })();
