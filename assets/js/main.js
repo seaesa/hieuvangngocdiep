@@ -77,10 +77,6 @@
   }
   // Cuộn tới mục trên trang hiện tại; nếu mục nằm ở trang chủ thì chuyển trang
   function goTo(hash) {
-    if (hash === '#gia-bac') {
-      if (!isHome) { location.href = '/#gia-bac'; return; }
-      showTab('silver'); hash = '#bang-gia';
-    }
     if (hash === '#top' || hash === 'body') {
       if (isHome) return window.scrollTo({ top: 0, behavior: 'smooth' });
       location.href = '/'; return;
@@ -236,22 +232,14 @@
   $$('.js-refresh').forEach(function (b) { b.addEventListener('click', loadPrices); });
 
   /* ---------------- TABS + CHART ---------------- */
-  var chartLoaded = false, chartSymbol = 'XAU';
-  var CHART = {
-    XAU: { tv: 'OANDA:XAUUSD', title: 'Vàng Thế Giới (XAU/USD)', metal: 'Vàng' },
-    XAG: { tv: 'OANDA:XAGUSD', title: 'Bạc Thế Giới (XAG/USD)', metal: 'Bạc' }
-  };
+  var chartLoaded = false;
   function loadChart(force) {
     if (chartLoaded && !force) return;
     chartLoaded = true;
-    var c = CHART[chartSymbol];
     var dark = !root.classList.contains('light');
-    var cfg = { symbol: c.tv, interval: 'D', save_image: '0', studies: '[]', theme: dark ? 'dark' : 'light', style: '1', timezone: 'Asia/Ho_Chi_Minh', withdateranges: '1', studies_overrides: '{}' };
+    var cfg = { symbol: 'OANDA:XAUUSD', interval: 'D', save_image: '0', studies: '[]', theme: dark ? 'dark' : 'light', style: '1', timezone: 'Asia/Ho_Chi_Minh', withdateranges: '1', studies_overrides: '{}' };
     var src = 'https://s.tradingview.com/widgetembed/?hideideas=1&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=vi#' + encodeURIComponent(JSON.stringify(cfg));
-    $('#chart-frame').innerHTML = '<iframe title="Biểu đồ ' + c.title + '" src="' + src + '" allowtransparency="true" scrolling="no" allowfullscreen loading="lazy"></iframe>';
-    $('#chart-title').textContent = c.title;
-    $('#chart-metal').textContent = c.metal;
-    $('#chart-metal').className = chartSymbol === 'XAG' ? 'silver-text' : 'gold-text';
+    $('#chart-frame').innerHTML = '<iframe title="Biểu đồ giá vàng thế giới XAUUSD" src="' + src + '" allowtransparency="true" scrolling="no" allowfullscreen loading="lazy"></iframe>';
   }
   function showTab(key) {
     $$('.tabs__btn').forEach(function (b) {
@@ -268,14 +256,6 @@
     });
   }
   $$('.tabs__btn').forEach(function (btn) { btn.addEventListener('click', function () { showTab(btn.dataset.tab); }); });
-  $$('.seg-mini__btn').forEach(function (b) {
-    b.addEventListener('click', function () {
-      if (b.dataset.symbol === chartSymbol) return;
-      chartSymbol = b.dataset.symbol;
-      $$('.seg-mini__btn').forEach(function (x) { var on = x === b; x.classList.toggle('is-on', on); x.setAttribute('aria-pressed', on); });
-      loadChart(true);
-    });
-  });
 
   /* ---------------- SMOOTH SCROLL LINKS ---------------- */
   $$('.js-scroll').forEach(function (el) {
@@ -998,7 +978,7 @@
     renderTables();
     stamp();
     loadPrices();
-    if (location.hash === '#gia-bac') { showTab('silver'); setTimeout(function () { smoothTo('#bang-gia'); }, 60); }
+    if (location.hash === '#gia-bac') setTimeout(function () { smoothTo('#gia-bac'); }, 60);
     renderProducts();
     initCarousel();
   }

@@ -3,6 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <script>
+    // Redirect URL về dạng /slug/: /slug/index.html -> /slug/, /slug -> /slug/
+    (function (l) {
+      var p = l.pathname, to = p.replace(/\/index\.html$/, '/');
+      if (!/\/$/.test(to) && !/\.[a-z0-9]+$/i.test(to)) to += '/';
+      if (to !== p) l.replace(to + l.search + l.hash);
+    })(location);
+  </script>
   <title>Hiệu Vàng Ngọc Diệp Đà Nẵng – Since 1990</title>
   <meta name="description" content="Hiệu Vàng Ngọc Diệp Đà Nẵng – Since 1990. Hơn 40 năm kinh nghiệm, chuyên mua bán vàng 24K – 18K, gia công trang sức vàng bạc. 94-96 Lý Thái Tổ, Thanh Khê, Đà Nẵng · 0905 887 044." />
   <meta name="theme-color" content="#ba915e" />
@@ -149,8 +157,7 @@
       <div class="container prices__inner">
         <div class="tabs" role="tablist">
           <button type="button" role="tab" class="tabs__btn is-active" aria-selected="true" data-tab="price">Bảng Giá Vàng</button>
-          <button type="button" role="tab" class="tabs__btn" aria-selected="false" data-tab="silver">Bảng Giá Bạc</button>
-          <button type="button" role="tab" class="tabs__btn" aria-selected="false" data-tab="chart">Biểu Đồ</button>
+          <button type="button" role="tab" class="tabs__btn" aria-selected="false" data-tab="chart">Biểu Đồ Vàng</button>
         </div>
 
         <!-- Panel: Bảng giá -->
@@ -200,8 +207,26 @@
           </div>
         </div>
 
-        <!-- Panel: Giá bạc -->
-        <div class="tabpanel" role="tabpanel" data-panel="silver" hidden>
+        <!-- Panel: Biểu đồ -->
+        <div class="tabpanel" role="tabpanel" data-panel="chart" hidden>
+          <div class="chart-head">
+            <h2 class="display-title"><span>Biểu Đồ <span class="gold-text">Vàng</span></span></h2>
+            <p class="chart-head__sub">Biến động giá vàng thế giới&nbsp;</p>
+          </div>
+          <div class="chart-card">
+            <div class="chart-card__title">
+              <svg class="i i-20 text-gold" stroke-width="1.75"><use href="#i-globe"/></svg>
+              <span>Vàng Thế Giới</span>
+            </div>
+            <div class="chart-card__frame" id="chart-frame"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BẢNG GIÁ BẠC ============ -->
+    <section id="gia-bac" class="prices prices--silver">
+      <div class="container prices__inner">
           <div class="sec-head sec-head--prices">
             <h2 class="display-title"><span>Bảng Giá <span class="silver-text">Bạc</span></span></h2>
             <p class="sec-sub">
@@ -243,26 +268,6 @@
               <p>Đơn vị: VNĐ / Lượng (37,5 gram)<br />Lưu ý: Giá website mang tính chất tham khảo, có thể thay đổi theo thị trường. Tất cả sản phẩm mua - bán được căn cứ theo giá niêm yết vào thời điểm giao dịch tại cửa hàng.</p>
             </div>
           </div>
-        </div>
-
-        <!-- Panel: Biểu đồ -->
-        <div class="tabpanel" role="tabpanel" data-panel="chart" hidden>
-          <div class="chart-head">
-            <h2 class="display-title"><span>Biểu Đồ <span class="gold-text" id="chart-metal">Vàng</span></span></h2>
-            <p class="chart-head__sub">Biến động giá thế giới theo thời gian thực</p>
-          </div>
-          <div class="chart-card">
-            <div class="chart-card__title">
-              <svg class="i i-20 text-gold" stroke-width="1.75"><use href="#i-globe"/></svg>
-              <span id="chart-title">Vàng Thế Giới (XAU/USD)</span>
-              <div class="seg-mini" role="group" aria-label="Chọn kim loại">
-                <button type="button" class="seg-mini__btn is-on" data-symbol="XAU" aria-pressed="true">Vàng</button>
-                <button type="button" class="seg-mini__btn" data-symbol="XAG" aria-pressed="false">Bạc</button>
-              </div>
-            </div>
-            <div class="chart-card__frame" id="chart-frame"></div>
-          </div>
-        </div>
       </div>
     </section>
 

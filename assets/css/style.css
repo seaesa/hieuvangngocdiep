@@ -327,7 +327,7 @@ input::placeholder { color: hsl(var(--muted-foreground)); opacity: 1; }
 .prices__inner { padding-top: 48px; padding-bottom: 48px; }
 
 .tabs {
-  display: grid; grid-template-columns: repeat(3, 1fr); align-items: center;
+  display: grid; grid-template-columns: repeat(2, 1fr); align-items: center;
   height: 36px; padding: 4px; margin-bottom: 32px; border-radius: 8px;
   background: hsl(var(--secondary) / .5); color: hsl(var(--muted-foreground));
 }
@@ -1070,13 +1070,8 @@ html:not(.light) .refresh__text { color: #fff; }
 .light .silver-text { background-image: linear-gradient(135deg, #8b94a3, #5f6877 45%, #3f4653, #7d8696); }
 .ticker__name--silver { color: #9aa3b0; }
 .light .ticker__name--silver { color: #6b7380; }
-@media (max-width: 400px) { .tabs__btn { padding: 4px 6px; font-size: 13px; } }
 
 .chart-card__title { flex-wrap: wrap; }
-.seg-mini { margin-left: auto; display: inline-flex; padding: 3px; border-radius: 9999px; background: hsl(var(--secondary) / .6); }
-.seg-mini__btn { height: 30px; padding: 0 14px; border-radius: 9999px; font-size: 13px; font-weight: 600; color: hsl(var(--muted-foreground)); transition: background-color .2s var(--ease), color .2s var(--ease); }
-.seg-mini__btn.is-on { background: hsl(var(--gold)); color: hsl(var(--primary-foreground)); }
-.seg-mini__btn[data-symbol="XAG"].is-on { background: #8b94a3; color: #fff; }
 
 
 /* ---------- Logo ---------- */
@@ -1094,3 +1089,16 @@ html:not(.light) .refresh__text { color: #fff; }
 .drawer__id .drawer__brand { font-size: 20px; line-height: 1.15; }
 .drawer__id .drawer__sub { letter-spacing: .06em; font-size: 10.5px; white-space: nowrap; }
 .footer__logo { display: block; width: 132px; height: auto; margin: 0 auto 14px; filter: drop-shadow(0 6px 18px hsl(var(--gold) / .25)); }
+
+/* Khung giá bạc riêng */
+.prices--silver { border-top: 1px solid hsl(var(--gold) / .2); background: linear-gradient(180deg, hsl(var(--secondary) / .35), hsl(var(--background)) 60%); scroll-margin-top: 64px; }
+.prices--silver .sec-head--prices { margin-top: 0; }
+.prices--silver .ptable { border-color: rgb(139 148 163 / .55); }
+.prices--silver .ptable__head { background-image: linear-gradient(to right, rgb(139 148 163 / .18), rgb(139 148 163 / .06), transparent); }
+.prices--silver .ptable tbody tr + tr, .prices--silver .ptable__note { border-color: rgb(139 148 163 / .35); }
+.prices--silver .ptable__head--d, .prices--silver .pm-th--name, .prices--silver .pm-th--sell { color: #7c8593; }
+.prices--silver .badge { border-color: rgb(139 148 163 / .6); color: #7c8593; }
+.prices--silver .prow--m td:first-child { color: #7c8593; }
+.prices--silver .prow:hover { background-color: rgb(139 148 163 / .06); }
+html:not(.light) .prices--silver .ptable__head--d, html:not(.light) .prices--silver .pm-th--name, html:not(.light) .prices--silver .pm-th--sell,
+html:not(.light) .prices--silver .badge, html:not(.light) .prices--silver .prow--m td:first-child { color: #b8bfc9; }

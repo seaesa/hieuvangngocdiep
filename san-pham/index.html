@@ -3,6 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <script>
+    // Redirect URL về dạng /slug/: /slug/index.html -> /slug/, /slug -> /slug/
+    (function (l) {
+      var p = l.pathname, to = p.replace(/\/index\.html$/, '/');
+      if (!/\/$/.test(to) && !/\.[a-z0-9]+$/i.test(to)) to += '/';
+      if (to !== p) l.replace(to + l.search + l.hash);
+    })(location);
+  </script>
   <title>Sản Phẩm | Hiệu Vàng Ngọc Diệp</title>
   <meta name="description" content="Vàng tích trữ, trang sức cưới, dây chuyền, lắc tay, nhẫn và quà tặng vàng tại Hiệu Vàng Ngọc Diệp – 94-96 Lý Thái Tổ, Đà Nẵng." />
   <meta name="theme-color" content="#ba915e" />

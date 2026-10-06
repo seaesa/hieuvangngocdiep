@@ -3,6 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <script>
+    // Redirect URL về dạng /slug/: /slug/index.html -> /slug/, /slug -> /slug/
+    (function (l) {
+      var p = l.pathname, to = p.replace(/\/index\.html$/, '/');
+      if (!/\/$/.test(to) && !/\.[a-z0-9]+$/i.test(to)) to += '/';
+      if (to !== p) l.replace(to + l.search + l.hash);
+    })(location);
+  </script>
   <title>Giới Thiệu | Công Ty TNHH MTV Hiệu Vàng Ngọc Diệp</title>
   <meta name="description" content="Giới thiệu Hiệu Vàng Ngọc Diệp — minh bạch, chất lượng và đồng hành lâu dài cùng khách hàng." />
   <meta name="theme-color" content="#ba915e" />
