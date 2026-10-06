@@ -1076,14 +1076,13 @@ html:not(.light) .refresh__text { color: #fff; }
 
 /* ---------- Logo ---------- */
 .hdr__logo, .hdr__logo-m img {
-  box-sizing: content-box; width: auto; padding: 6px 7px; border-radius: 9999px;
-  background: #fffaf0; box-shadow: 0 2px 8px -2px rgb(60 35 5 / .35), inset 0 0 0 1px rgb(212 175 55 / .35);
+  display: block; width: auto; border-radius: 10px; background: #fff;
+  box-shadow: 0 2px 8px -2px rgb(60 35 5 / .35);
 }
-.hdr__logo { height: 26px; }
-.hdr--overlay .hdr__logo { background: rgb(255 250 240 / .95); }
+.hdr__logo { height: 52px; margin: -6px 0; }
+.hdr__logo-m img { height: 48px; }
 .hdr__inner--m { position: relative; }
 .hdr__logo-m { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: block; }
-.hdr__logo-m img { height: 24px; }
 .drawer__id { display: flex; align-items: center; gap: 12px; min-width: 0; }
 .drawer__logo { height: 34px; width: auto; flex-shrink: 0; }
 .drawer__id .drawer__brand { font-size: 20px; line-height: 1.15; }
