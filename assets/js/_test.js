@@ -32,11 +32,11 @@
 
   // THÔNG TIN LIÊN HỆ — điền thông tin thật của Ngọc Diệp vào đây (để trống = hiện "Đang cập nhật")
   var CONTACT = {
-    gpkd: '',      // VD: '0401234567'
-    address: '',   // VD: '123 Đường ABC, Phường XYZ, TP. Đà Nẵng'
-    hotline: '',   // VD: '0236 123 4567'
-    zalo: '',      // VD: '0905 123 456'
-    email: ''      // VD: 'hieuvangngocdiep@gmail.com'
+    gpkd: '0401234567',      // VD: '0401234567'
+    address: '123 Lê Duẩn, Đà Nẵng',   // VD: '123 Đường ABC, Phường XYZ, TP. Đà Nẵng'
+    hotline: '0236 123 4567',   // VD: '0236 123 4567'
+    zalo: '0905 123 456',      // VD: '0905 123 456'
+    email: 'a@b.vn'      // VD: 'hieuvangngocdiep@gmail.com'
   };
 
   /* ---------------- HELPERS ---------------- */
