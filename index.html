@@ -93,7 +93,7 @@
             <ul class="topnav__list">
               <li><a href="#top" class="topnav__link js-scroll is-active" data-target="body" data-spy="top">Trang chủ</a></li>
               <li><a href="gioi-thieu.html" class="topnav__link">Giới thiệu</a></li>
-              <li><a href="#bang-gia" class="topnav__link js-scroll" data-spy="bang-gia">Bảng giá vàng</a></li>
+              <li><a href="#bang-gia" class="topnav__link js-scroll" data-spy="bang-gia">Bảng giá</a></li>
               <li class="dd dd--mega">
                 <button type="button" class="topnav__link dd__trigger" data-spy="san-pham" aria-expanded="false" aria-haspopup="true">Sản phẩm <svg class="i i-16 chev" stroke-width="2"><use href="#i-chevron-down"/></svg></button>
                 <div class="dd__panel dd__panel--mega" id="mega-products"></div>
@@ -101,6 +101,7 @@
               <li class="dd">
                 <button type="button" class="topnav__link dd__trigger" aria-expanded="false" aria-haspopup="true">Công cụ vàng <svg class="i i-16 chev" stroke-width="2"><use href="#i-chevron-down"/></svg></button>
                 <div class="dd__panel">
+                  <a href="#gia-bac" class="dd__item js-scroll"><svg class="i i-18" stroke-width="2"><use href="#i-chart-line"/></svg><span><b>Giá bạc hôm nay</b><small>Bảng giá bạc &amp; giá bạc thế giới</small></span></a>
                   <button type="button" class="dd__item" data-soon><svg class="i i-18" stroke-width="2"><use href="#i-calculator"/></svg><span><b>Máy tính giá vàng</b><small>Quy đổi nhanh theo chỉ, lượng</small></span></button>
                 </div>
               </li>
@@ -146,7 +147,8 @@
       <div class="container prices__inner">
         <div class="tabs" role="tablist">
           <button type="button" role="tab" class="tabs__btn is-active" aria-selected="true" data-tab="price">Bảng Giá Vàng</button>
-          <button type="button" role="tab" class="tabs__btn" aria-selected="false" data-tab="chart">Biểu Đồ Vàng</button>
+          <button type="button" role="tab" class="tabs__btn" aria-selected="false" data-tab="silver">Bảng Giá Bạc</button>
+          <button type="button" role="tab" class="tabs__btn" aria-selected="false" data-tab="chart">Biểu Đồ</button>
         </div>
 
         <!-- Panel: Bảng giá -->
@@ -196,16 +198,65 @@
           </div>
         </div>
 
+        <!-- Panel: Giá bạc -->
+        <div class="tabpanel" role="tabpanel" data-panel="silver" hidden>
+          <div class="sec-head sec-head--prices">
+            <h2 class="display-title"><span>Bảng Giá <span class="silver-text">Bạc</span></span></h2>
+            <p class="sec-sub">
+              <button type="button" class="refresh js-refresh">
+                <svg class="i i-16" stroke-width="2"><use href="#i-rotate-cw"/></svg>
+                <span class="refresh__text">Cập nhật lúc <span id="silver-updated-at"></span></span>
+              </button>
+            </p>
+          </div>
+
+          <div class="ptable ptable--m">
+            <table>
+              <thead>
+                <tr class="ptable__head">
+                  <th class="pm-th pm-th--name">Hiệu Vàng Ngọc Diệp</th>
+                  <th class="pm-th pm-th--buy">Mua vào</th>
+                  <th class="pm-th pm-th--sell">Bán ra</th>
+                </tr>
+              </thead>
+              <tbody id="stable-m"></tbody>
+            </table>
+            <div class="ptable__note ptable__note--m">
+              <p>Đơn vị: VNĐ / Lượng (37,5 gram)<br />Lưu ý: Giá website mang tính chất tham khảo, có thể thay đổi theo thị trường.</p>
+            </div>
+          </div>
+
+          <div class="ptable ptable--d">
+            <table>
+              <thead>
+                <tr class="ptable__head ptable__head--d">
+                  <th>Loại bạc</th>
+                  <th class="tc">Mua vào</th>
+                  <th class="tc">Bán ra</th>
+                </tr>
+              </thead>
+              <tbody id="stable-d"></tbody>
+            </table>
+            <div class="ptable__note">
+              <p>Đơn vị: VNĐ / Lượng (37,5 gram)<br />Lưu ý: Giá website mang tính chất tham khảo, có thể thay đổi theo thị trường. Tất cả sản phẩm mua - bán được căn cứ theo giá niêm yết vào thời điểm giao dịch tại cửa hàng.</p>
+            </div>
+          </div>
+        </div>
+
         <!-- Panel: Biểu đồ -->
         <div class="tabpanel" role="tabpanel" data-panel="chart" hidden>
           <div class="chart-head">
-            <h2 class="display-title"><span>Biểu Đồ <span class="gold-text">Vàng</span></span></h2>
-            <p class="chart-head__sub">Biến động giá vàng thế giới&nbsp;</p>
+            <h2 class="display-title"><span>Biểu Đồ <span class="gold-text" id="chart-metal">Vàng</span></span></h2>
+            <p class="chart-head__sub">Biến động giá thế giới theo thời gian thực</p>
           </div>
           <div class="chart-card">
             <div class="chart-card__title">
               <svg class="i i-20 text-gold" stroke-width="1.75"><use href="#i-globe"/></svg>
-              <span>Vàng Thế Giới</span>
+              <span id="chart-title">Vàng Thế Giới (XAU/USD)</span>
+              <div class="seg-mini" role="group" aria-label="Chọn kim loại">
+                <button type="button" class="seg-mini__btn is-on" data-symbol="XAU" aria-pressed="true">Vàng</button>
+                <button type="button" class="seg-mini__btn" data-symbol="XAG" aria-pressed="false">Bạc</button>
+              </div>
             </div>
             <div class="chart-card__frame" id="chart-frame"></div>
           </div>
@@ -417,6 +468,7 @@ Quý khách có thể trao đổi với nhân viên tư vấn ngay tại đây.<
         <a href="#top" class="nav-item js-nav-link"><svg class="i i-18" stroke-width="2"><use href="#i-house"/></svg> Trang chủ</a>
         <a href="gioi-thieu.html" class="nav-item"><svg class="i i-18" stroke-width="2"><use href="#i-info"/></svg> Giới thiệu</a>
         <a href="#bang-gia" class="nav-item js-nav-link"><svg class="i i-18" stroke-width="2"><use href="#i-chart-line"/></svg> Bảng giá vàng</a>
+        <a href="#gia-bac" class="nav-item js-nav-link"><svg class="i i-18" stroke-width="2"><use href="#i-chart-line"/></svg> Bảng giá bạc</a>
         <div class="nav-group">
           <button type="button" class="nav-item nav-item--toggle js-sub" aria-label="Mở/đóng submenu Sản phẩm" aria-expanded="false">
             <span class="nav-item__lbl"><svg class="i i-18" stroke-width="2"><use href="#i-crown"/></svg> Sản phẩm</span>

@@ -327,7 +327,7 @@ input::placeholder { color: hsl(var(--muted-foreground)); opacity: 1; }
 .prices__inner { padding-top: 48px; padding-bottom: 48px; }
 
 .tabs {
-  display: grid; grid-template-columns: repeat(2, 1fr); align-items: center;
+  display: grid; grid-template-columns: repeat(3, 1fr); align-items: center;
   height: 36px; padding: 4px; margin-bottom: 32px; border-radius: 8px;
   background: hsl(var(--secondary) / .5); color: hsl(var(--muted-foreground));
 }
@@ -1059,3 +1059,22 @@ html:not(.light) .refresh__text { color: #fff; }
 
 .footer__since { margin-top: 6px; font-size: 13px; letter-spacing: .04em; color: hsl(var(--muted-foreground)); }
 @media (min-width: 640px) { .values--2 { grid-template-columns: repeat(2, 1fr); } }
+
+/* =========================================================
+   GIÁ BẠC & GIÁ THẾ GIỚI TRỰC TIẾP
+   ========================================================= */
+.silver-text {
+  background: linear-gradient(135deg, #f4f6f9, #b8bfc9 40%, #7c8593, #dfe3ea);
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.light .silver-text { background-image: linear-gradient(135deg, #8b94a3, #5f6877 45%, #3f4653, #7d8696); }
+.ticker__name--silver { color: #9aa3b0; }
+.light .ticker__name--silver { color: #6b7380; }
+@media (max-width: 400px) { .tabs__btn { padding: 4px 6px; font-size: 13px; } }
+
+.chart-card__title { flex-wrap: wrap; }
+.seg-mini { margin-left: auto; display: inline-flex; padding: 3px; border-radius: 9999px; background: hsl(var(--secondary) / .6); }
+.seg-mini__btn { height: 30px; padding: 0 14px; border-radius: 9999px; font-size: 13px; font-weight: 600; color: hsl(var(--muted-foreground)); transition: background-color .2s var(--ease), color .2s var(--ease); }
+.seg-mini__btn.is-on { background: hsl(var(--gold)); color: hsl(var(--primary-foreground)); }
+.seg-mini__btn[data-symbol="XAG"].is-on { background: #8b94a3; color: #fff; }
+

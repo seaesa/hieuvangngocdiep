@@ -3,7 +3,7 @@
   'use strict';
 
   /* ---------------- DATA ---------------- */
-  // Bảng giá vàng (VNĐ / chỉ) — theo bảng giá niêm yết của cửa hàng đăng trên fanpage
+  // Bảng giá vàng (VNĐ / chỉ) — số mặc định; khi mở trang sẽ được thay bằng giá quy đổi từ API (loadPrices)
   var PRICES = [
     { id: '9999', name: 'Vàng 9999', buy: 14100000, sell: 14230000 },
     { id: '980', name: 'Vàng 98', buy: 13760000, sell: 13950000 },
@@ -11,6 +11,13 @@
     { id: 'NT980', name: 'Nữ Trang 98', buy: 13760000, sell: 14050000 },
     { id: '610', name: 'Vàng 610', buy: 8580000, sell: 9000000 }
   ];
+  // Bảng giá bạc (VNĐ / lượng 37,5g) — số mặc định; khi mở trang sẽ được thay bằng giá quy đổi từ API
+  var SILVER_PRICES = [
+    { id: 'AG999', name: 'Bạc 999 (miếng, thỏi)', buy: 2138000, sell: 2204000 },
+    { id: 'AG999MN', name: 'Bạc mỹ nghệ 999', buy: 2138000, sell: 2515000 }
+  ];
+  var SILVER_UPDATED_AT = '18:00 06/10/2026';
+
   // Mốc giờ cập nhật của bảng giá (hiển thị ở "Cập nhật lúc ...")
   var PRICES_UPDATED_AT = '09:15 28/08/2026';
 
@@ -70,6 +77,10 @@
   }
   // Cuộn tới mục trên trang hiện tại; nếu mục nằm ở trang chủ thì chuyển trang
   function goTo(hash) {
+    if (hash === '#gia-bac') {
+      if (!isHome) { location.href = 'index.html#gia-bac'; return; }
+      showTab('silver'); hash = '#bang-gia';
+    }
     if (hash === '#top' || hash === 'body') {
       if (isHome) return window.scrollTo({ top: 0, behavior: 'smooth' });
       location.href = 'index.html'; return;
@@ -157,9 +168,11 @@
 
   /* ---------------- TICKER ---------------- */
   function renderTicker() {
-    var one = PRICES.map(function (p) {
-      return '<span class="ticker__item"><span class="ticker__name">' + p.name + '</span><span class="ticker__val">' + fmt(p.sell) + '</span></span>';
-    }).join('');
+    var item = function (name, val, cls) {
+      return '<span class="ticker__item"><span class="ticker__name' + (cls || '') + '">' + name + '</span><span class="ticker__val">' + fmt(val) + '</span></span>';
+    };
+    var one = PRICES.map(function (p) { return item(p.name, p.sell); }).join('') +
+      SILVER_PRICES.slice(0, 1).map(function (p) { return item('Bạc 999 / lượng', p.sell, ' ticker__name--silver'); }).join('');
     $('#ticker').innerHTML = one + one; // nhân đôi để chạy vòng liền mạch (-50%)
   }
 
@@ -171,53 +184,96 @@
   }, { threshold: 0.1 }) : null;
 
   function renderTables() {
-    $('#ptable-d').innerHTML = PRICES.map(function (p) {
+    renderPriceTable('#ptable-d', '#ptable-m', PRICES, 'gold-text');
+    renderPriceTable('#stable-d', '#stable-m', SILVER_PRICES, 'silver-text');
+  }
+  function renderPriceTable(dSel, mSel, rows, sellCls) {
+    if (!$(dSel)) return;
+    var shown = $(dSel + ' tr.is-in') || $(mSel + ' tr.is-in'); // đã hiện -> cập nhật tại chỗ, không chạy lại hiệu ứng
+    $(dSel).innerHTML = rows.map(function (p) {
       return '<tr class="prow reveal">' +
         '<td><div class="prow__name"><span class="badge"><span>Hiệu Vàng</span><span>Ngọc Diệp</span></span><span class="prow__label">' + p.name + '</span></div></td>' +
         '<td class="prow__price">' + fmt(p.buy) + '</td>' +
-        '<td class="prow__price gold-text">' + fmt(p.sell) + '</td></tr>';
+        '<td class="prow__price ' + sellCls + '">' + fmt(p.sell) + '</td></tr>';
     }).join('');
-    $('#ptable-m').innerHTML = PRICES.map(function (p) {
-      return '<tr class="prow--m reveal"><td>' + p.name + '</td><td>' + fmt(p.buy) + '</td><td class="gold-text">' + fmt(p.sell) + '</td></tr>';
+    $(mSel).innerHTML = rows.map(function (p) {
+      return '<tr class="prow--m reveal"><td>' + p.name + '</td><td>' + fmt(p.buy) + '</td><td class="' + sellCls + '">' + fmt(p.sell) + '</td></tr>';
     }).join('');
-    $$('#ptable-d tr, #ptable-m tr').forEach(function (tr) {
-      if (rowObserver) rowObserver.observe(tr); else tr.classList.add('is-in');
+    $$(dSel + ' tr, ' + mSel + ' tr').forEach(function (tr) {
+      if (shown || !rowObserver) tr.classList.add('is-in'); else rowObserver.observe(tr);
     });
   }
 
-  function stamp() { $('#updated-at').textContent = PRICES_UPDATED_AT; }
-  if ($('.js-refresh')) $('.js-refresh').addEventListener('click', function () {
-    var b = this;
-    if (b.disabled) return;
-    b.disabled = true;
-    b.classList.add('is-loading');
-    setTimeout(function () {
-      stamp();
-      b.classList.remove('is-loading');
-      b.disabled = false;
-    }, 800);
-  });
+  function stamp() {
+    $('#updated-at').textContent = PRICES_UPDATED_AT;
+    if ($('#silver-updated-at')) $('#silver-updated-at').textContent = SILVER_UPDATED_AT;
+  }
+  /* ---------------- GIÁ TỪ API (demo) ----------------
+   * Mở trang là lấy giá vàng & bạc thế giới (USD/ounce) + tỷ giá USD/VND rồi quy đổi đổ vào bảng.
+   * API miễn phí, không cần key: api.gold-api.com, open.er-api.com
+   */
+  function loadPrices() {
+    var get = function (u) { return fetch(u).then(function (r) { return r.json(); }); };
+    return Promise.all([
+      get('https://api.gold-api.com/price/XAU'),
+      get('https://api.gold-api.com/price/XAG'),
+      get('https://open.er-api.com/v6/latest/USD')
+    ]).then(function (r) {
+      var vnd = r[2].rates.VND, perGram = function (usdOz) { return usdOz * vnd / 31.1035; };
+      var round = function (n) { return Math.round(n / 1000) * 1000; };
+      var chi = perGram(r[0].price) * 3.75;   // 1 chỉ vàng 999.9
+      var luong = perGram(r[1].price) * 37.5; // 1 lượng bạc 999
+      var row = function (p, base, k) { p.sell = round(base * k); p.buy = round(base * k * 0.985); };
+      var GOLD_K = { '9999': 1, '980': 0.98, '960': 0.96, 'NT980': 0.98, '610': 0.61 };
+      PRICES.forEach(function (p) { row(p, chi, GOLD_K[p.id] || 1); });
+      var SILVER_K = { AG999: 1, AG999MN: 1.1 };
+      SILVER_PRICES.forEach(function (p) { row(p, luong, SILVER_K[p.id] || 1); });
+      var d = new Date(), pad = function (n) { return String(n).padStart(2, '0'); };
+      PRICES_UPDATED_AT = SILVER_UPDATED_AT = pad(d.getHours()) + ':' + pad(d.getMinutes()) + ' ' + pad(d.getDate()) + '/' + pad(d.getMonth() + 1) + '/' + d.getFullYear();
+      renderTables(); renderTicker(); stamp();
+    }).catch(function () { /* lỗi mạng: giữ giá mặc định */ });
+  }
+  $$('.js-refresh').forEach(function (b) { b.addEventListener('click', loadPrices); });
 
   /* ---------------- TABS + CHART ---------------- */
-  var chartLoaded = false;
+  var chartLoaded = false, chartSymbol = 'XAU';
+  var CHART = {
+    XAU: { tv: 'OANDA:XAUUSD', title: 'Vàng Thế Giới (XAU/USD)', metal: 'Vàng' },
+    XAG: { tv: 'OANDA:XAGUSD', title: 'Bạc Thế Giới (XAG/USD)', metal: 'Bạc' }
+  };
   function loadChart(force) {
     if (chartLoaded && !force) return;
     chartLoaded = true;
+    var c = CHART[chartSymbol];
     var dark = !root.classList.contains('light');
-    var cfg = { symbol: 'OANDA:XAUUSD', interval: 'D', save_image: '0', studies: '[]', theme: dark ? 'dark' : 'light', style: '1', timezone: 'Asia/Ho_Chi_Minh', withdateranges: '1', studies_overrides: '{}' };
+    var cfg = { symbol: c.tv, interval: 'D', save_image: '0', studies: '[]', theme: dark ? 'dark' : 'light', style: '1', timezone: 'Asia/Ho_Chi_Minh', withdateranges: '1', studies_overrides: '{}' };
     var src = 'https://s.tradingview.com/widgetembed/?hideideas=1&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=vi#' + encodeURIComponent(JSON.stringify(cfg));
-    $('#chart-frame').innerHTML = '<iframe title="Biểu đồ giá vàng thế giới XAUUSD" src="' + src + '" allowtransparency="true" scrolling="no" allowfullscreen loading="lazy"></iframe>';
+    $('#chart-frame').innerHTML = '<iframe title="Biểu đồ ' + c.title + '" src="' + src + '" allowtransparency="true" scrolling="no" allowfullscreen loading="lazy"></iframe>';
+    $('#chart-title').textContent = c.title;
+    $('#chart-metal').textContent = c.metal;
+    $('#chart-metal').className = chartSymbol === 'XAG' ? 'silver-text' : 'gold-text';
   }
-  $$('.tabs__btn').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var key = btn.dataset.tab;
-      $$('.tabs__btn').forEach(function (b) {
-        var on = b === btn;
-        b.classList.toggle('is-active', on);
-        b.setAttribute('aria-selected', on);
-      });
-      $$('.tabpanel').forEach(function (p) { p.hidden = p.dataset.panel !== key; });
-      if (key === 'chart') loadChart();
+  function showTab(key) {
+    $$('.tabs__btn').forEach(function (b) {
+      var on = b.dataset.tab === key;
+      b.classList.toggle('is-active', on);
+      b.setAttribute('aria-selected', on);
+    });
+    $$('.tabpanel').forEach(function (p) { p.hidden = p.dataset.panel !== key; });
+    if (key === 'chart') loadChart();
+    // hàng bảng giá trong tab vừa mở đã nằm sẵn trong khung nhìn -> hiện ngay
+    $$('.tabpanel:not([hidden]) .reveal').forEach(function (tr) {
+      var r = tr.getBoundingClientRect();
+      if (r.top < innerHeight && r.bottom > 0) tr.classList.add('is-in');
+    });
+  }
+  $$('.tabs__btn').forEach(function (btn) { btn.addEventListener('click', function () { showTab(btn.dataset.tab); }); });
+  $$('.seg-mini__btn').forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (b.dataset.symbol === chartSymbol) return;
+      chartSymbol = b.dataset.symbol;
+      $$('.seg-mini__btn').forEach(function (x) { var on = x === b; x.classList.toggle('is-on', on); x.setAttribute('aria-pressed', on); });
+      loadChart(true);
     });
   });
 
@@ -938,6 +994,8 @@
     renderTicker();
     renderTables();
     stamp();
+    loadPrices();
+    if (location.hash === '#gia-bac') { showTab('silver'); setTimeout(function () { smoothTo('#bang-gia'); }, 60); }
     renderProducts();
     initCarousel();
   }
