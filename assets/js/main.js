@@ -3,40 +3,44 @@
   'use strict';
 
   /* ---------------- DATA ---------------- */
-  // Giá mẫu (VNĐ / chỉ) — thay bằng nguồn giá thật khi tích hợp backend
+  // Bảng giá vàng (VNĐ / chỉ) — theo bảng giá niêm yết của cửa hàng đăng trên fanpage
   var PRICES = [
-    { id: '9999', name: 'Vàng 999.9', buy: 13250000, sell: 13400000 },
-    { id: '980', name: 'Vàng 980', buy: 12950000, sell: 13100000 },
-    { id: '960', name: 'Vàng 960', buy: 12650000, sell: 12800000 },
-    { id: 'NT980', name: 'Vàng Nữ Trang 980', buy: 12950000, sell: 13250000 },
-    { id: '610', name: 'Vàng 610', buy: 8000000, sell: 8500000 }
+    { id: '9999', name: 'Vàng 9999', buy: 14100000, sell: 14230000 },
+    { id: '980', name: 'Vàng 98', buy: 13760000, sell: 13950000 },
+    { id: '960', name: 'Vàng 96', buy: 13460000, sell: 13650000 },
+    { id: 'NT980', name: 'Nữ Trang 98', buy: 13760000, sell: 14050000 },
+    { id: '610', name: 'Vàng 610', buy: 8580000, sell: 9000000 }
   ];
-
-  var IMG = 'assets/img/products/';
-  var PRODUCTS = [
-    { slug: 'vang-tich-tru', title: 'Vàng Tích Trữ', desc: 'Nhẫn khâu tròn 999.9 / 980 / 960', img: IMG + 'vang-tich-tru.jpg',
-      children: ['Vàng 999.9', 'Vàng 980', 'Vàng 960'] },
-    { slug: 'trang-suc-vang-980', title: 'Trang Sức Vàng 980', desc: 'Đa dạng mẫu trang sức và vàng cưới', img: IMG + 'trang-suc-vang-980.jpg',
-      children: ['Dây Chuyền 980', 'Mặt Kiểu 980', 'Nhẫn Kiểu 980', 'Lắc Tay 980', 'Vòng Tay 980', 'Kiềng Cổ 980', 'Bông Tai 980'] },
-    { slug: 'bo-suu-tap', title: 'Bộ Sưu Tập', desc: 'Những bộ sưu tập nổi bật theo xu hướng', img: IMG + 'bo-suu-tap.jpg',
-      children: ['Nhẫn Cưới 610', 'Nhẫn Cưới Trắng 610'] },
-    { slug: 'trang-suc-vang-610', title: 'Trang Sức Vàng 610', desc: 'Đa dạng mẫu vàng tây 610', img: IMG + 'trang-suc-vang-610.jpg',
-      children: ['Dây Chuyền 610', 'Mặt Kiểu 610', 'Nhẫn Nam 610', 'Nhẫn Nữ 610', 'Lắc Tay 610', 'Vòng Tay 610', 'Bông Tai 610'] },
-    { slug: 'trang-suc-vang-trang-610', title: 'Trang Sức Vàng Trắng 610', desc: 'Đa dạng mẫu vàng tây Trắng 610', img: IMG + 'trang-suc-vang-trang-610.jpg',
-      children: ['Dây Chuyền Trắng 610', 'Mặt Kiểu Trắng 610', 'Nhẫn Nam Trắng 610', 'Nhẫn Nữ Trắng 610', 'Lắc Tay Trắng 610', 'Vòng Tay Trắng 610', 'Bông Tai Trắng 610'] }
-  ];
-  var MENU_ORDER = [0, 1, 3, 4, 2]; // thứ tự trong menu giống trang gốc
-
   // Mốc giờ cập nhật của bảng giá (hiển thị ở "Cập nhật lúc ...")
-  var PRICES_UPDATED_AT = '11:05 06/10/2026';
+  var PRICES_UPDATED_AT = '09:15 28/08/2026';
+
+  // Danh mục sản phẩm (ảnh đại diện lấy từ sản phẩm thật trong assets/img/catalog/)
+  var IMG = 'assets/img/catalog/';
+  var PRODUCTS = [
+    { slug: 'vang-tich-tru', title: 'Vàng Tích Trữ', desc: 'Nhẫn tròn 24K, đồng vàng, vàng ép vỉ 999.9', img: IMG + 'dong-vang-999.jpg',
+      children: ['Nhẫn Tròn Trơn', 'Đồng Vàng', 'Vàng Ép Vỉ'] },
+    { slug: 'trang-suc-cuoi', title: 'Trang Sức Cưới', desc: 'Dây cổ cưới, mặt khoá, vòng cưới truyền thống', img: IMG + 'day-co-cuoi-5-tang.jpg',
+      children: ['Dây Cổ Cưới', 'Mặt Khoá', 'Vòng Cưới'] },
+    { slug: 'day-chuyen', title: 'Dây Chuyền', desc: 'Cỏ 4 lá, mặt charm, dây hoa men', img: IMG + 'day-chuyen-co-4-la-vang.jpg',
+      children: ['Dây Chuyền Cỏ 4 Lá', 'Dây Chuyền Mặt Charm', 'Dây Hoa Men'] },
+    { slug: 'lac-vong', title: 'Lắc & Vòng Tay', desc: 'Lắc tay cỏ 4 lá, bọ rùa, bộ lắc & nhẫn', img: IMG + 'lac-co-4-la-xanh.jpg',
+      children: ['Lắc Tay', 'Bộ Lắc & Nhẫn'] },
+    { slug: 'nhan', title: 'Nhẫn Thời Trang', desc: 'Nhẫn nữ đính đá, bản lưới, mắt xích', img: IMG + 'nhan-hoa-dinh-da.jpg',
+      children: ['Nhẫn Nữ'] },
+    { slug: 'qua-tang', title: 'Quà Tặng Vàng', desc: 'Tượng phong thuỷ, hoa hồng vàng, quà cho bé', img: IMG + 'tuong-tai-than-cuoi-ngua.jpg',
+      children: ['Tượng Vàng Phong Thuỷ', 'Hoa Vàng', 'Quà Tặng Bé'] }
+  ];
+  var MENU_ORDER = [0, 1, 2, 3, 4, 5];
 
   // THÔNG TIN LIÊN HỆ — điền thông tin thật của Ngọc Diệp vào đây (để trống = hiện "Đang cập nhật")
   var CONTACT = {
-    gpkd: '',      // VD: '0401234567'
-    address: '',   // VD: '123 Đường ABC, Phường XYZ, TP. Đà Nẵng'
-    hotline: '',   // VD: '0236 123 4567'
-    zalo: '',      // VD: '0905 123 456'
-    email: ''      // VD: 'hieuvangngocdiep@gmail.com'
+    gpkd: '',                                                   // chưa có — điền khi khách cung cấp
+    address: '94-96 Lý Thái Tổ, phường Thanh Khê, TP. Đà Nẵng',
+    hotline: '0905 887 044',
+    zalo: '0905 887 044',                                        // cùng số với hotline (theo fanpage)
+    email: 'giabaobao2021123@gmail.com',
+    facebook: 'https://www.facebook.com/HieuVangNgocDiepHau/',
+    hours: 'Mở cửa tất cả các ngày trong tuần'                  // fanpage ghi "Always open"
   };
 
   /* ---------------- HELPERS ---------------- */
@@ -235,8 +239,11 @@
       '<span class="pcard__more">Xem thêm' + icon('arrow-right') + '</span></div></a>';
   }
   function renderProducts() {
-    $('#pgrid-3').innerHTML = PRODUCTS.slice(0, 3).map(function (p) { return '<div>' + cardHTML(p) + '</div>'; }).join('');
-    $('#pgrid-2').innerHTML = PRODUCTS.slice(3).map(function (p) { return '<div>' + cardHTML(p) + '</div>'; }).join('');
+    // 5 danh mục: lưới 3 + 2 (căn giữa); nhiều hơn: lưới 3 cột liên tục
+    var split = PRODUCTS.length === 5 ? 3 : PRODUCTS.length;
+    $('#pgrid-3').innerHTML = PRODUCTS.slice(0, split).map(function (p) { return '<div>' + cardHTML(p) + '</div>'; }).join('');
+    $('#pgrid-2').innerHTML = PRODUCTS.slice(split).map(function (p) { return '<div>' + cardHTML(p) + '</div>'; }).join('');
+    $('#pgrid-2').hidden = split === PRODUCTS.length;
     $('#pcarousel-dots').innerHTML = PRODUCTS.map(function (p, i) {
       return '<button type="button" class="pcarousel__dot" data-i="' + i + '" aria-label="Danh mục ' + (i + 1) + '"></button>';
     }).join('');
@@ -612,13 +619,14 @@
       address: function (v) { return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(v); },
       hotline: function (v) { return 'tel:' + digits(v); },
       zalo: function (v) { return 'https://zalo.me/' + digits(v); },
-      email: function (v) { return 'mailto:' + v; }
+      email: function (v) { return 'mailto:' + v; },
+      facebook: function (v) { return v; }
     };
     function link(el, key) {
       var v = (CONTACT[key] || '').trim();
       if (!v || !href[key]) return;
       el.href = href[key](v);
-      if (key === 'address' || key === 'zalo') { el.target = '_blank'; el.rel = 'noopener noreferrer'; }
+      if (key === 'address' || key === 'zalo' || key === 'facebook') { el.target = '_blank'; el.rel = 'noopener noreferrer'; }
     }
     $$('[data-contact]').forEach(function (el) {
       var key = el.dataset.contact, v = (CONTACT[key] || '').trim();
@@ -642,27 +650,22 @@
   var CATALOG = window.ND_CATALOG || [];
   var CAT_BY_SLUG = {};
   PRODUCTS.forEach(function (c) { CAT_BY_SLUG[c.slug] = c; });
-  var GOLD_LABEL = { '9999': 'Vàng 999.9', '980': 'Vàng 980', '960': 'Vàng 960', '610': 'Vàng 610' };
-  function goldLabel(p) { return p.white ? 'Vàng trắng 610' : GOLD_LABEL[p.gold]; }
-  function fmtWeight(w) {
-    var c = Math.floor(w + 1e-9), ph = Math.round((w - c) * 10);
-    return [c ? c + ' chỉ' : '', ph ? ph + ' phân' : ''].filter(Boolean).join(' ');
-  }
+  function goldLabel(p) { return p.gold || ''; }
   function fold(str) { return String(str).normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase(); }
   function productImg(p) { return 'assets/img/catalog/' + p.img + '.jpg'; }
   function findProduct(id) { return CATALOG.filter(function (p) { return p.id === id; })[0]; }
 
   function productCard(p, i) {
-    var badgeCls = p.white ? ' badge-gold--white' : (p.gold === '9999' ? ' badge-gold--24k' : '');
+    var badge = p.gold ? '<span class="badge-gold' + (/999|24K/.test(p.gold) ? ' badge-gold--24k' : '') + '">' + p.gold.replace('Vàng ', '') + '</span>' : '';
     return '<article class="prod" style="animation-delay:' + Math.min(i || 0, 12) * 45 + 'ms">' +
       '<button type="button" class="prod__media js-qv" data-id="' + p.id + '" aria-label="Xem nhanh ' + esc(p.name) + '">' +
         '<img src="' + productImg(p) + '" alt="' + esc(p.name) + '" loading="lazy" decoding="async" width="800" height="800" />' +
-        '<span class="prod__badges"><span class="badge-gold' + badgeCls + '">' + (p.white ? 'Vàng trắng' : goldLabel(p).replace('Vàng ', '')) + '</span>' +
+        '<span class="prod__badges">' + badge +
           (p.isNew ? '<span class="badge-new">Mới</span>' : '') + '</span>' +
         '<span class="prod__quick">' + icon('eye', 'i-16') + 'Xem nhanh</span>' +
       '</button>' +
       '<div class="prod__body">' +
-        '<p class="prod__meta">' + p.id + ' · ' + fmtWeight(p.weight) + (p.pair ? ' / cặp' : '') + '</p>' +
+        '<p class="prod__meta">' + p.id + ' · ' + esc(p.sub) + (p.weight ? ' · ' + p.weight : '') + '</p>' +
         '<h3 class="prod__name"><button type="button" class="js-qv" data-id="' + p.id + '">' + esc(p.name) + '</button></h3>' +
         '<button type="button" class="prod__more js-qv" data-id="' + p.id + '" tabindex="-1">Xem chi tiết' + icon('arrow-right', 'i-16') + '</button>' +
       '</div></article>';
@@ -725,12 +728,10 @@
     $('#qv-crumb').innerHTML = '<a href="' + shopUrl({ cat: p.cat }) + '">' + cat.title + '</a> · <a href="' + shopUrl({ cat: p.cat, sub: p.sub }) + '">' + p.sub + '</a>';
     $('#qv-title').textContent = p.name;
     $('#qv-sku').textContent = CAT_BY_SLUG[p.cat].desc;
-    var specs = [['Loại vàng', goldLabel(p)], ['Trọng lượng', fmtWeight(p.weight) + (p.pair ? ' (cả cặp)' : '')]];
-    if (p.stone) specs.push(['Đá đính', p.stone]);
-    specs.push(['Mã sản phẩm', p.id]);
+    var specs = [['Loại vàng', p.gold || 'Liên hệ tư vấn'], ['Trọng lượng', p.weight || 'Liên hệ tư vấn'], ['Danh mục', p.sub], ['Mã sản phẩm', p.id]];
     $('#qv-specs').innerHTML = specs.map(function (s) { return '<div><dt>' + s[0] + '</dt><dd>' + s[1] + '</dd></div>'; }).join('');
     $('#qv-desc').textContent = p.desc;
-    $('#qv-note').textContent = 'Trọng lượng mang tính tham khảo, có thể chênh lệch nhỏ tuỳ kích cỡ. Quý khách vui lòng liên hệ cửa hàng để được tư vấn chi tiết.';
+    $('#qv-note').textContent = 'Mẫu có sẵn tại cửa hàng 94-96 Lý Thái Tổ, Đà Nẵng. Nhận gia công theo yêu cầu về kiểu dáng, trọng lượng — vui lòng liên hệ để được tư vấn.';
     var many = qvList.length > 1;
     $$('.qv__nav', qv).forEach(function (n) { n.hidden = !many; });
   }
@@ -773,8 +774,8 @@
       $('#chat-body').scrollTop = $('#chat-body').scrollHeight;
     } else {
       var greet = $('.chat__greet');
-      if (greet && !$('.chat__product')) greet.insertAdjacentHTML('afterend', '<div class="chat__product"><img src="' + productImg(p) + '" alt="" /><div><b>' + esc(p.name) + '</b><span>' + p.id + ' · ' + goldLabel(p) + ' · ' + fmtWeight(p.weight) + '</span></div></div>');
-      else if ($('.chat__product')) $('.chat__product').outerHTML = '<div class="chat__product"><img src="' + productImg(p) + '" alt="" /><div><b>' + esc(p.name) + '</b><span>' + p.id + ' · ' + goldLabel(p) + ' · ' + fmtWeight(p.weight) + '</span></div></div>';
+      if (greet && !$('.chat__product')) greet.insertAdjacentHTML('afterend', '<div class="chat__product"><img src="' + productImg(p) + '" alt="" /><div><b>' + esc(p.name) + '</b><span>' + p.id + ' · ' + esc(p.sub) + '</span></div></div>');
+      else if ($('.chat__product')) $('.chat__product').outerHTML = '<div class="chat__product"><img src="' + productImg(p) + '" alt="" /><div><b>' + esc(p.name) + '</b><span>' + p.id + ' · ' + esc(p.sub) + '</span></div></div>';
     }
   }
 
@@ -816,12 +817,12 @@
     var grid = $('#shop-grid');
     if (!grid) return;
     var st = {};
-    var qIn = $('#shop-q'), goldSel = $('#shop-gold'), sortSel = $('#shop-sort');
+    var qIn = $('#shop-q'), sortSel = $('#shop-sort');
     function setState(p) {
-      st = { cat: p.cat || '', sub: p.sub || '', q: p.q || '', gold: p.gold || '', sort: ['new', 'weight-desc'].indexOf(p.sort) >= 0 ? p.sort : 'featured' };
+      st = { cat: p.cat || '', sub: p.sub || '', q: p.q || '', sort: p.sort === 'new' ? 'new' : 'featured' };
       if (st.cat && !CAT_BY_SLUG[st.cat]) st.cat = '';
       if (st.sub && (!st.cat || CAT_BY_SLUG[st.cat].children.indexOf(st.sub) < 0)) st.sub = '';
-      qIn.value = st.q; goldSel.value = st.gold; sortSel.value = st.sort;
+      qIn.value = st.q; sortSel.value = st.sort;
     }
     function paramsOf(search) {
       var u = new URLSearchParams(search), o = {};
@@ -833,8 +834,6 @@
     function matches(p, ignoreCat) {
       if (!ignoreCat && st.cat && p.cat !== st.cat) return false;
       if (!ignoreCat && st.sub && p.sub !== st.sub) return false;
-      if (st.gold === 'white' && !p.white) return false;
-      if (st.gold && st.gold !== 'white' && (p.gold !== st.gold || p.white)) return false;
       if (st.q) {
         var hay = fold([p.name, p.id, p.sub, p.desc, CAT_BY_SLUG[p.cat].title, goldLabel(p)].join(' '));
         if (fold(st.q).split(/\s+/).some(function (w) { return w && hay.indexOf(w) < 0; })) return false;
@@ -843,14 +842,13 @@
     }
     function sortItems(items) {
       var by = {
-        'weight-desc': function (a, b) { return b.weight - a.weight; },
         'new': function (a, b) { return (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0); },
         'featured': function (a, b) { return (b.featured ? 1 : 0) - (a.featured ? 1 : 0); }
       }[st.sort];
       return items.slice().sort(by);
     }
     function syncUrl(push) {
-      var u = shopUrl({ cat: st.cat, sub: st.sub, q: st.q, gold: st.gold, sort: st.sort === 'featured' ? '' : st.sort });
+      var u = shopUrl({ cat: st.cat, sub: st.sub, q: st.q, sort: st.sort === 'featured' ? '' : st.sort });
       if (u === 'san-pham.html' + location.search || (u === 'san-pham.html' && !location.search)) return;
       if (push) history.pushState(null, '', u); else history.replaceState(null, '', u);
     }
@@ -905,11 +903,10 @@
     var t;
     qIn.addEventListener('input', function () { clearTimeout(t); t = setTimeout(function () { st.q = qIn.value.trim(); render(); }, 220); });
     $('#shop-search').addEventListener('submit', function (e) { e.preventDefault(); clearTimeout(t); st.q = qIn.value.trim(); render(); });
-    goldSel.addEventListener('change', function () { st.gold = goldSel.value; render(); });
     sortSel.addEventListener('change', function () { st.sort = sortSel.value; render(); });
     $$('.js-shop-reset').forEach(function (b) { b.addEventListener('click', function () {
-      st = { cat: '', sub: '', q: '', gold: '', sort: 'featured' };
-      qIn.value = ''; goldSel.value = ''; sortSel.value = 'featured'; render(true);
+      st = { cat: '', sub: '', q: '', sort: 'featured' };
+      qIn.value = ''; sortSel.value = 'featured'; render(true);
     }); });
 
     // Điều hướng tới trang sản phẩm khi đang ở chính trang này: lọc tại chỗ, không tải lại trang

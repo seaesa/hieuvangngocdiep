@@ -1023,7 +1023,7 @@ html:not(.light) .refresh__text { color: #fff; }
 .container.shop-body { padding-left: 16px; padding-right: 16px; }
 @media (min-width: 640px) { .container.shop-body { padding-left: 24px; padding-right: 24px; } }
 .shop-filters { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
-.shop-tools { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: end; padding-top: 4px; }
+.shop-tools { display: grid; grid-template-columns: 1fr; gap: 10px; align-items: end; padding-top: 4px; }
 .shop-search { grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 14px; border-radius: 9999px; border: 1px solid hsl(var(--gold) / .3); background: hsl(var(--card)); transition: border-color .2s, box-shadow .2s; }
 .shop-search:focus-within { border-color: hsl(var(--gold)); box-shadow: 0 0 0 3px hsl(var(--gold) / .15); }
 .shop-search .i { color: hsl(var(--gold)); }
@@ -1040,7 +1040,7 @@ html:not(.light) .refresh__text { color: #fff; }
 .shop-select select option { color: #000; }
 .shop-count { grid-column: 1 / -1; font-size: 13px; color: hsl(var(--muted-foreground)); }
 @media (min-width: 768px) {
-  .shop-tools { grid-template-columns: minmax(0, 1fr) 200px 220px; }
+  .shop-tools { grid-template-columns: minmax(0, 1fr) 220px; }
   .shop-search { grid-column: auto; }
 }
 .shop-empty { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 56px 16px; text-align: center; }
@@ -1056,3 +1056,6 @@ html:not(.light) .refresh__text { color: #fff; }
 .mega__list li a.is-current { color: #f5d57a; font-weight: 600; }
 .mega__list li a.is-current::before { background: #f5d57a; transform: scale(1.6); }
 .sub-row__lbl.is-current, .sub-leaf.is-current { color: hsl(var(--primary)); font-weight: 600; background: hsl(var(--primary) / .1); }
+
+.footer__since { margin-top: 6px; font-size: 13px; letter-spacing: .04em; color: hsl(var(--muted-foreground)); }
+@media (min-width: 640px) { .values--2 { grid-template-columns: repeat(2, 1fr); } }
