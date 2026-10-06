@@ -23,10 +23,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/assets/css/style.css" />
-  <script>
-    // URL gọn: /slug/index.html hoặc /slug/ -> /slug (không tải lại trang)
-    (function (p) { var c = p.replace(/\/index\.html$/, '/').replace(/(.)\/$/, '$1'); if (c !== p) history.replaceState(null, '', c + location.search + location.hash); })(location.pathname);
-  </script>
 
   <script>
     // Áp theme trước khi vẽ trang để tránh nháy màu
@@ -87,7 +83,7 @@
           <nav class="topnav" id="topnav" aria-label="Menu chính">
             <ul class="topnav__list">
               <li><a href="/" class="topnav__link">Trang chủ</a></li>
-              <li><a href="/gioi-thieu" class="topnav__link is-active" aria-current="page">Giới thiệu</a></li>
+              <li><a href="/gioi-thieu/" class="topnav__link is-active" aria-current="page">Giới thiệu</a></li>
               <li><a href="/#bang-gia" class="topnav__link">Bảng giá</a></li>
               <li class="dd dd--mega">
                 <button type="button" class="topnav__link dd__trigger" aria-expanded="false" aria-haspopup="true">Sản phẩm <svg class="i i-16 chev" stroke-width="2"><use href="#i-chevron-down"/></svg></button>
@@ -299,7 +295,7 @@ Quý khách có thể trao đổi với nhân viên tư vấn ngay tại đây.<
           <button type="button" id="nav-search-x" aria-label="Đóng tìm kiếm"><svg class="i i-16" stroke-width="2"><use href="#i-x"/></svg></button>
         </form>
         <a href="/" class="nav-item js-nav-link"><svg class="i i-18" stroke-width="2"><use href="#i-house"/></svg> Trang chủ</a>
-        <a href="/gioi-thieu" class="nav-item is-current" aria-current="page"><svg class="i i-18" stroke-width="2"><use href="#i-info"/></svg> Giới thiệu</a>
+        <a href="/gioi-thieu/" class="nav-item is-current" aria-current="page"><svg class="i i-18" stroke-width="2"><use href="#i-info"/></svg> Giới thiệu</a>
         <a href="/#bang-gia" class="nav-item js-nav-link"><svg class="i i-18" stroke-width="2"><use href="#i-chart-line"/></svg> Bảng giá vàng</a>
         <a href="/#gia-bac" class="nav-item js-nav-link"><svg class="i i-18" stroke-width="2"><use href="#i-chart-line"/></svg> Bảng giá bạc</a>
         <div class="nav-group">

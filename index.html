@@ -23,10 +23,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/assets/css/style.css" />
-  <script>
-    // URL gọn: /slug/index.html hoặc /slug/ -> /slug (không tải lại trang)
-    (function (p) { var c = p.replace(/\/index\.html$/, '/').replace(/(.)\/$/, '$1'); if (c !== p) history.replaceState(null, '', c + location.search + location.hash); })(location.pathname);
-  </script>
 
   <script>
     // Áp theme trước khi vẽ trang để tránh nháy màu
@@ -98,7 +94,7 @@
           <nav class="topnav" id="topnav" aria-label="Menu chính">
             <ul class="topnav__list">
               <li><a href="#top" class="topnav__link js-scroll is-active" data-target="body" data-spy="top">Trang chủ</a></li>
-              <li><a href="/gioi-thieu" class="topnav__link">Giới thiệu</a></li>
+              <li><a href="/gioi-thieu/" class="topnav__link">Giới thiệu</a></li>
               <li><a href="#bang-gia" class="topnav__link js-scroll" data-spy="bang-gia">Bảng giá</a></li>
               <li class="dd dd--mega">
                 <button type="button" class="topnav__link dd__trigger" data-spy="san-pham" aria-expanded="false" aria-haspopup="true">Sản phẩm <svg class="i i-16 chev" stroke-width="2"><use href="#i-chevron-down"/></svg></button>
@@ -278,7 +274,7 @@
         <div class="sec-head">
           <h2 class="display-title"><span>Sản Phẩm <span class="gold-text">Vàng</span></span></h2>
           <p class="sec-sub">
-            <a href="/san-pham" class="see-all">Xem tất cả <svg class="i i-16" stroke-width="2"><use href="#i-arrow-right"/></svg></a>
+            <a href="/san-pham/" class="see-all">Xem tất cả <svg class="i i-16" stroke-width="2"><use href="#i-arrow-right"/></svg></a>
           </p>
         </div>
         <!-- Desktop grid (>=768) -->
@@ -302,7 +298,7 @@
           <div class="chips chips--center" id="feat-chips" role="toolbar" aria-label="Lọc theo danh mục"></div>
           <div class="prodgrid" id="feat-grid" data-grid></div>
           <div class="center mt-8">
-            <a href="/san-pham" class="btn-outline" id="feat-more">Xem tất cả sản phẩm <svg class="i i-16" stroke-width="2"><use href="#i-arrow-right"/></svg></a>
+            <a href="/san-pham/" class="btn-outline" id="feat-more">Xem tất cả sản phẩm <svg class="i i-16" stroke-width="2"><use href="#i-arrow-right"/></svg></a>
           </div>
         </div>
       </div>
@@ -475,7 +471,7 @@ Quý khách có thể trao đổi với nhân viên tư vấn ngay tại đây.<
           <button type="button" id="nav-search-x" aria-label="Đóng tìm kiếm"><svg class="i i-16" stroke-width="2"><use href="#i-x"/></svg></button>
         </form>
         <a href="#top" class="nav-item js-nav-link"><svg class="i i-18" stroke-width="2"><use href="#i-house"/></svg> Trang chủ</a>
-        <a href="/gioi-thieu" class="nav-item"><svg class="i i-18" stroke-width="2"><use href="#i-info"/></svg> Giới thiệu</a>
+        <a href="/gioi-thieu/" class="nav-item"><svg class="i i-18" stroke-width="2"><use href="#i-info"/></svg> Giới thiệu</a>
         <a href="#bang-gia" class="nav-item js-nav-link"><svg class="i i-18" stroke-width="2"><use href="#i-chart-line"/></svg> Bảng giá vàng</a>
         <a href="#gia-bac" class="nav-item js-nav-link"><svg class="i i-18" stroke-width="2"><use href="#i-chart-line"/></svg> Bảng giá bạc</a>
         <div class="nav-group">

@@ -93,7 +93,7 @@
   function shopUrl(params) {
     var q = [];
     Object.keys(params || {}).forEach(function (k) { if (params[k]) q.push(k + '=' + encodeURIComponent(params[k])); });
-    return '/san-pham' + (q.length ? '?' + q.join('&') : '');
+    return '/san-pham/' + (q.length ? '?' + q.join('&') : '');
   }
   var shopApply = null; // được gán khi đang ở trang sản phẩm
   function navigateShop(params) {
@@ -908,7 +908,7 @@
     }
     function syncUrl(push) {
       var u = shopUrl({ cat: st.cat, sub: st.sub, q: st.q, sort: st.sort === 'featured' ? '' : st.sort });
-      if (u === '/san-pham' + location.search) return;
+      if (u === '/san-pham/' + location.search) return;
       if (push) history.pushState(null, '', u); else history.replaceState(null, '', u);
     }
     // Đánh dấu mục đang xem trong menu (mega + drawer)

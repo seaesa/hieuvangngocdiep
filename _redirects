@@ -1,6 +1,0 @@
-# Netlify / Cloudflare Pages
-/index.html             /            301
-/gioi-thieu.html        /gioi-thieu  301
-/san-pham.html          /san-pham    301
-/gioi-thieu/index.html  /gioi-thieu  301
-/san-pham/index.html    /san-pham    301
