@@ -1,0 +1,8 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/gioi-thieu.html", "destination": "/gioi-thieu", "permanent": true },
+    { "source": "/san-pham.html", "destination": "/san-pham", "permanent": true }
+  ]
+}

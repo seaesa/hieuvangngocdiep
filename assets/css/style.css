@@ -1078,3 +1078,19 @@ html:not(.light) .refresh__text { color: #fff; }
 .seg-mini__btn.is-on { background: hsl(var(--gold)); color: hsl(var(--primary-foreground)); }
 .seg-mini__btn[data-symbol="XAG"].is-on { background: #8b94a3; color: #fff; }
 
+
+/* ---------- Logo ---------- */
+.hdr__logo, .hdr__logo-m img {
+  box-sizing: content-box; width: auto; padding: 6px 7px; border-radius: 9999px;
+  background: #fffaf0; box-shadow: 0 2px 8px -2px rgb(60 35 5 / .35), inset 0 0 0 1px rgb(212 175 55 / .35);
+}
+.hdr__logo { height: 26px; }
+.hdr--overlay .hdr__logo { background: rgb(255 250 240 / .95); }
+.hdr__inner--m { position: relative; }
+.hdr__logo-m { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: block; }
+.hdr__logo-m img { height: 24px; }
+.drawer__id { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.drawer__logo { height: 34px; width: auto; flex-shrink: 0; }
+.drawer__id .drawer__brand { font-size: 20px; line-height: 1.15; }
+.drawer__id .drawer__sub { letter-spacing: .06em; font-size: 10.5px; white-space: nowrap; }
+.footer__logo { display: block; width: 132px; height: auto; margin: 0 auto 14px; filter: drop-shadow(0 6px 18px hsl(var(--gold) / .25)); }

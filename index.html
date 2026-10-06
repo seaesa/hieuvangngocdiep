@@ -6,23 +6,28 @@
   <title>Hiệu Vàng Ngọc Diệp Đà Nẵng – Since 1990</title>
   <meta name="description" content="Hiệu Vàng Ngọc Diệp Đà Nẵng – Since 1990. Hơn 40 năm kinh nghiệm, chuyên mua bán vàng 24K – 18K, gia công trang sức vàng bạc. 94-96 Lý Thái Tổ, Thanh Khê, Đà Nẵng · 0905 887 044." />
   <meta name="theme-color" content="#ba915e" />
-  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
-  <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png" />
-  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+  <link rel="icon" href="/assets/img/favicon.png" type="image/png" />
+  <link rel="icon" href="/assets/img/favicon-32.png" sizes="32x32" type="image/png" />
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png" />
   <!-- Ảnh xem trước khi chia sẻ link (Zalo/Facebook). Khi có tên miền, đổi og:image/og:url sang URL tuyệt đối -->
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="vi_VN" />
   <meta property="og:site_name" content="Hiệu Vàng Ngọc Diệp" />
   <meta property="og:title" content="Công Ty TNHH MTV Hiệu Vàng Ngọc Diệp" />
   <meta property="og:description" content="Since 1990 · Hơn 40 năm kinh nghiệm · Chuyên mua bán vàng 24K – 18K, gia công trang sức vàng bạc · 94-96 Lý Thái Tổ, Đà Nẵng · 0905 887 044" />
-  <meta property="og:image" content="assets/img/og-image.jpg" />
+  <meta property="og:image" content="/assets/img/og-image.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="/assets/css/style.css" />
+  <script>
+    // URL gọn: /slug/index.html hoặc /slug/ -> /slug (không tải lại trang)
+    (function (p) { var c = p.replace(/\/index\.html$/, '/').replace(/(.)\/$/, '$1'); if (c !== p) history.replaceState(null, '', c + location.search + location.hash); })(location.pathname);
+  </script>
+
   <script>
     // Áp theme trước khi vẽ trang để tránh nháy màu
     try { if (localStorage.getItem('theme-preference') === 'dark') document.documentElement.classList.remove('light'); } catch (e) {}
@@ -70,6 +75,7 @@
           <button type="button" class="hdr__menu js-open-menu" aria-label="Mở menu">
             <svg class="i" style="width:35px;height:35px" stroke-width="2"><use href="#i-menu"/></svg>
           </button>
+          <a href="#top" class="hdr__logo-m" aria-label="Hiệu Vàng Ngọc Diệp - Trang chủ"><img src="/assets/img/logo-mark.png" alt="Ngọc Diệp" width="408" height="288" /></a>
           <a href="#bang-gia" class="btn-gold btn-gold--sm js-scroll">Bảng Giá Vàng</a>
         </div>
       </header>
@@ -86,13 +92,13 @@
 
           <!-- Desktop (>=1024): menu ngang đầy đủ -->
           <a href="#top" class="hdr__brand js-scroll" data-target="body" aria-label="Hiệu Vàng Ngọc Diệp - Trang chủ">
-            <svg class="i hdr__brand-icon" stroke-width="1.5"><use href="#i-crown"/></svg>
+            <img class="hdr__logo" src="/assets/img/logo-mark.png" alt="" width="408" height="288" />
             <span class="hdr__brand-text">Ngọc Diệp</span>
           </a>
           <nav class="topnav" id="topnav" aria-label="Menu chính">
             <ul class="topnav__list">
               <li><a href="#top" class="topnav__link js-scroll is-active" data-target="body" data-spy="top">Trang chủ</a></li>
-              <li><a href="gioi-thieu.html" class="topnav__link">Giới thiệu</a></li>
+              <li><a href="/gioi-thieu" class="topnav__link">Giới thiệu</a></li>
               <li><a href="#bang-gia" class="topnav__link js-scroll" data-spy="bang-gia">Bảng giá</a></li>
               <li class="dd dd--mega">
                 <button type="button" class="topnav__link dd__trigger" data-spy="san-pham" aria-expanded="false" aria-haspopup="true">Sản phẩm <svg class="i i-16 chev" stroke-width="2"><use href="#i-chevron-down"/></svg></button>
@@ -131,8 +137,8 @@
     <!-- ============ HERO ============ -->
     <section id="top" class="hero force-dark">
       <picture class="hero__photo">
-        <source media="(min-aspect-ratio: 1/1)" srcset="assets/img/hero-desktop.jpg" />
-        <img src="assets/img/hero-mobile.jpg" alt="Trang sức vàng Ngọc Diệp" decoding="sync" fetchpriority="high" />
+        <source media="(min-aspect-ratio: 1/1)" srcset="/assets/img/hero-desktop.jpg" />
+        <img src="/assets/img/hero-mobile.jpg" alt="Trang sức vàng Ngọc Diệp" decoding="sync" fetchpriority="high" />
       </picture>
       <h1 class="hero__h1"><span>Hiệu Vàng</span><span>Ngọc Diệp</span></h1>
     </section>
@@ -272,7 +278,7 @@
         <div class="sec-head">
           <h2 class="display-title"><span>Sản Phẩm <span class="gold-text">Vàng</span></span></h2>
           <p class="sec-sub">
-            <a href="san-pham.html" class="see-all">Xem tất cả <svg class="i i-16" stroke-width="2"><use href="#i-arrow-right"/></svg></a>
+            <a href="/san-pham" class="see-all">Xem tất cả <svg class="i i-16" stroke-width="2"><use href="#i-arrow-right"/></svg></a>
           </p>
         </div>
         <!-- Desktop grid (>=768) -->
@@ -296,7 +302,7 @@
           <div class="chips chips--center" id="feat-chips" role="toolbar" aria-label="Lọc theo danh mục"></div>
           <div class="prodgrid" id="feat-grid" data-grid></div>
           <div class="center mt-8">
-            <a href="san-pham.html" class="btn-outline" id="feat-more">Xem tất cả sản phẩm <svg class="i i-16" stroke-width="2"><use href="#i-arrow-right"/></svg></a>
+            <a href="/san-pham" class="btn-outline" id="feat-more">Xem tất cả sản phẩm <svg class="i i-16" stroke-width="2"><use href="#i-arrow-right"/></svg></a>
           </div>
         </div>
       </div>
@@ -309,7 +315,7 @@
       <div class="footer__glow" aria-hidden="true"></div>
       <div class="container container--px4 footer__inner">
         <div class="footer__head">
-          <div class="footer__crown"><svg class="i" stroke-width="1.5"><use href="#i-crown"/></svg></div>
+          <img class="footer__logo" src="/assets/img/logo.png" alt="Ngọc Diệp Jewelry" width="408" height="424" />
           <h2 class="footer__name">Công Ty TNHH MTV Hiệu Vàng Ngọc Diệp</h2>
           <p class="footer__since">Since 1990 · Hơn 40 năm kinh nghiệm trong ngành vàng bạc trang sức</p>
           <div class="footer__rule"></div>
@@ -452,9 +458,12 @@ Quý khách có thể trao đổi với nhân viên tư vấn ngay tại đây.<
     <div class="drawer__overlay" id="drawer-overlay"></div>
     <aside class="drawer__panel" id="drawer-panel">
       <div class="drawer__head">
-        <div>
+        <div class="drawer__id">
+          <img class="drawer__logo" src="/assets/img/logo-mark.png" alt="" width="408" height="288" />
+          <div>
           <p class="drawer__brand gold-text"><strong>Hiệu Vàng Ngọc Diệp</strong></p>
           <p class="drawer__sub">94-96 Lý Thái Tổ · Đà Nẵng</p>
+          </div>
         </div>
         <button type="button" class="drawer__close js-close-menu" aria-label="Đóng menu"><svg class="i i-20" stroke-width="2"><use href="#i-x"/></svg></button>
       </div>
@@ -466,7 +475,7 @@ Quý khách có thể trao đổi với nhân viên tư vấn ngay tại đây.<
           <button type="button" id="nav-search-x" aria-label="Đóng tìm kiếm"><svg class="i i-16" stroke-width="2"><use href="#i-x"/></svg></button>
         </form>
         <a href="#top" class="nav-item js-nav-link"><svg class="i i-18" stroke-width="2"><use href="#i-house"/></svg> Trang chủ</a>
-        <a href="gioi-thieu.html" class="nav-item"><svg class="i i-18" stroke-width="2"><use href="#i-info"/></svg> Giới thiệu</a>
+        <a href="/gioi-thieu" class="nav-item"><svg class="i i-18" stroke-width="2"><use href="#i-info"/></svg> Giới thiệu</a>
         <a href="#bang-gia" class="nav-item js-nav-link"><svg class="i i-18" stroke-width="2"><use href="#i-chart-line"/></svg> Bảng giá vàng</a>
         <a href="#gia-bac" class="nav-item js-nav-link"><svg class="i i-18" stroke-width="2"><use href="#i-chart-line"/></svg> Bảng giá bạc</a>
         <div class="nav-group">
@@ -500,7 +509,7 @@ Quý khách có thể trao đổi với nhân viên tư vấn ngay tại đây.<
 
   <ol class="toasts" id="toasts" aria-live="polite"></ol>
 
-  <script src="assets/js/catalog.js" defer></script>
-  <script src="assets/js/main.js" defer></script>
+  <script src="/assets/js/catalog.js" defer></script>
+  <script src="/assets/js/main.js" defer></script>
 </body>
 </html>

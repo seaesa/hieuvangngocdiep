@@ -22,7 +22,7 @@
   var PRICES_UPDATED_AT = '09:15 28/08/2026';
 
   // Danh mục sản phẩm (ảnh đại diện lấy từ sản phẩm thật trong assets/img/catalog/)
-  var IMG = 'assets/img/catalog/';
+  var IMG = '/assets/img/catalog/';
   var PRODUCTS = [
     { slug: 'vang-tich-tru', title: 'Vàng Tích Trữ', desc: 'Nhẫn tròn 24K, đồng vàng, vàng ép vỉ 999.9', img: IMG + 'dong-vang-999.jpg',
       children: ['Nhẫn Tròn Trơn', 'Đồng Vàng', 'Vàng Ép Vỉ'] },
@@ -78,22 +78,22 @@
   // Cuộn tới mục trên trang hiện tại; nếu mục nằm ở trang chủ thì chuyển trang
   function goTo(hash) {
     if (hash === '#gia-bac') {
-      if (!isHome) { location.href = 'index.html#gia-bac'; return; }
+      if (!isHome) { location.href = '/#gia-bac'; return; }
       showTab('silver'); hash = '#bang-gia';
     }
     if (hash === '#top' || hash === 'body') {
       if (isHome) return window.scrollTo({ top: 0, behavior: 'smooth' });
-      location.href = 'index.html'; return;
+      location.href = '/'; return;
     }
     var el = $(hash);
-    if (el) smoothTo(el); else location.href = 'index.html' + hash;
+    if (el) smoothTo(el); else location.href = '/' + hash;
   }
   var isHome = document.body.dataset.page === 'home';
   // Link tới trang danh sách sản phẩm (có thể kèm bộ lọc)
   function shopUrl(params) {
     var q = [];
     Object.keys(params || {}).forEach(function (k) { if (params[k]) q.push(k + '=' + encodeURIComponent(params[k])); });
-    return 'san-pham.html' + (q.length ? '?' + q.join('&') : '');
+    return '/san-pham' + (q.length ? '?' + q.join('&') : '');
   }
   var shopApply = null; // được gán khi đang ở trang sản phẩm
   function navigateShop(params) {
@@ -282,6 +282,7 @@
     el.addEventListener('click', function (e) {
       e.preventDefault();
       var t = el.dataset.target || el.getAttribute('href');
+      if (t.indexOf('/#') === 0) t = t.slice(1);
       goTo(t.indexOf('#') > 0 ? t.slice(t.indexOf('#')) : t);
     });
   });
@@ -484,6 +485,8 @@
     a.addEventListener('click', function (e) {
       e.preventDefault();
       var href = a.getAttribute('href');
+      if (isHome && href.indexOf('/#') === 0) href = href.slice(1);
+      if (href === '/' && isHome) href = '#top';
       if (href.charAt(0) !== '#') { closeMenu(function () { location.href = href; }); return; }
       closeMenu(function () { goTo(href); });
     });
@@ -708,7 +711,7 @@
   PRODUCTS.forEach(function (c) { CAT_BY_SLUG[c.slug] = c; });
   function goldLabel(p) { return p.gold || ''; }
   function fold(str) { return String(str).normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase(); }
-  function productImg(p) { return 'assets/img/catalog/' + p.img + '.jpg'; }
+  function productImg(p) { return '/assets/img/catalog/' + p.img + '.jpg'; }
   function findProduct(id) { return CATALOG.filter(function (p) { return p.id === id; })[0]; }
 
   function productCard(p, i) {
@@ -905,7 +908,7 @@
     }
     function syncUrl(push) {
       var u = shopUrl({ cat: st.cat, sub: st.sub, q: st.q, sort: st.sort === 'featured' ? '' : st.sort });
-      if (u === 'san-pham.html' + location.search || (u === 'san-pham.html' && !location.search)) return;
+      if (u === '/san-pham' + location.search) return;
       if (push) history.pushState(null, '', u); else history.replaceState(null, '', u);
     }
     // Đánh dấu mục đang xem trong menu (mega + drawer)
@@ -977,7 +980,7 @@
       var a = e.target.closest('a[href]');
       if (!a || a.target === '_blank') return;
       var url = new URL(a.getAttribute('href'), location.href);
-      if (url.origin !== location.origin || !/san-pham\.html$/.test(url.pathname)) return;
+      if (url.origin !== location.origin || !/^\/san-pham\/?$/.test(url.pathname)) return;
       e.preventDefault();
       var p = paramsOf(url.search);
       if (menuOpen) closeMenu(function () { shopApply(p, true); });
