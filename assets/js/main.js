@@ -72,7 +72,7 @@
   function smoothTo(target) {
     var el = typeof target === 'string' ? $(target) : target;
     if (!el) return;
-    var y = el === document.body ? 0 : el.getBoundingClientRect().top + window.scrollY;
+    var y = el === document.body ? 0 : el.getBoundingClientRect().top + window.scrollY - (parseFloat(getComputedStyle(el).scrollMarginTop) || 0);
     window.scrollTo({ top: y, behavior: 'smooth' });
   }
   // Cuộn tới mục trên trang hiện tại; nếu mục nằm ở trang chủ thì chuyển trang
@@ -164,6 +164,7 @@
 
   /* ---------------- TICKER ---------------- */
   function renderTicker() {
+    if (!$('#ticker')) return;
     var item = function (name, val, cls) {
       return '<span class="ticker__item"><span class="ticker__name' + (cls || '') + '">' + name + '</span><span class="ticker__val">' + fmt(val) + '</span></span>';
     };
@@ -201,7 +202,7 @@
   }
 
   function stamp() {
-    $('#updated-at').textContent = PRICES_UPDATED_AT;
+    if ($('#updated-at')) $('#updated-at').textContent = PRICES_UPDATED_AT;
     if ($('#silver-updated-at')) $('#silver-updated-at').textContent = SILVER_UPDATED_AT;
   }
   /* ---------------- GIÁ TỪ API (demo) ----------------
@@ -226,10 +227,56 @@
       SILVER_PRICES.forEach(function (p) { row(p, luong, SILVER_K[p.id] || 1); });
       var d = new Date(), pad = function (n) { return String(n).padStart(2, '0'); };
       PRICES_UPDATED_AT = SILVER_UPDATED_AT = pad(d.getHours()) + ':' + pad(d.getMinutes()) + ' ' + pad(d.getDate()) + '/' + pad(d.getMonth() + 1) + '/' + d.getFullYear();
-      renderTables(); renderTicker(); stamp();
+      renderTables(); renderTicker(); stamp(); renderCalc();
     }).catch(function () { /* lỗi mạng: giữ giá mặc định */ });
   }
   $$('.js-refresh').forEach(function (b) { b.addEventListener('click', loadPrices); });
+
+  /* ---------------- MÁY TÍNH GIÁ VÀNG / BẠC ---------------- */
+  var calc = null;
+  function initCalc() {
+    var box = $('[data-calc]');
+    if (!box) return;
+    var silver = box.dataset.calc === 'silver';
+    calc = { box: box, rows: silver ? SILVER_PRICES : PRICES, mode: 'sell', type: $('#calc-type'), weight: $('#calc-weight'), labor: $('#calc-labor') };
+    $$('.calc-mode__btn', box).forEach(function (b) {
+      b.addEventListener('click', function () {
+        calc.mode = b.dataset.mode;
+        $$('.calc-mode__btn', box).forEach(function (x) { var on = x === b; x.classList.toggle('is-on', on); x.setAttribute('aria-pressed', on); });
+        renderCalc();
+      });
+    });
+    calc.weight.addEventListener('input', function () {
+      calc.weight.value = calc.weight.value.replace(/[^\d.,]/g, '').replace(/([.,].*)[.,]/, '$1');
+      renderCalc();
+    });
+    calc.labor.addEventListener('input', function () {
+      var d = calc.labor.value.replace(/\D/g, '');
+      calc.labor.value = d ? fmt(+d) : '';
+      renderCalc();
+    });
+    calc.type.addEventListener('change', renderCalc);
+    renderCalc();
+  }
+  function renderCalc() {
+    if (!calc) return;
+    var cur = calc.type.value;
+    calc.type.innerHTML = calc.rows.map(function (p) { return '<option value="' + p.id + '">' + p.name + '</option>'; }).join('');
+    if (cur) calc.type.value = cur;
+    var row = calc.rows.filter(function (p) { return p.id === calc.type.value; })[0] || calc.rows[0];
+    var unit = row[calc.mode];
+    var w = parseFloat(calc.weight.value.replace(',', '.')) || 0;
+    var sell = calc.mode === 'sell';
+    var labor = sell ? (+calc.labor.value.replace(/\D/g, '') || 0) : 0;
+    calc.labor.disabled = !sell;
+    calc.labor.placeholder = sell ? 'Vd: 200.000' : 'Không áp dụng khi bán lại';
+    var sub = Math.round(unit * w);
+    $('#calc-unit').textContent = fmt(unit) + ' VNĐ';
+    $('#calc-sub').textContent = fmt(sub) + ' VNĐ';
+    $('#calc-labor-out').textContent = fmt(labor) + ' VNĐ';
+    $('#calc-total').textContent = fmt(sub + labor) + ' VNĐ';
+    $('#calc-total-lbl').textContent = sell ? 'Tổng Cộng' : 'Cửa Hàng Trả';
+  }
 
   /* ---------------- TABS + CHART ---------------- */
   var chartLoaded = false;
@@ -970,22 +1017,52 @@
     render(false);
   }
 
+  /* ---------------- TIN TỨC ---------------- */
+  function initNews() {
+    var chips = $('#news-chips');
+    if (chips) chips.addEventListener('click', function (e) {
+      var c = e.target.closest('.chip');
+      if (!c) return;
+      $$('.chip', chips).forEach(function (x) { var on = x === c; x.classList.toggle('is-on', on); x.setAttribute('aria-pressed', on); });
+      var n = 0;
+      $$('#news-list > article').forEach(function (a) {
+        var show = !c.dataset.cat || a.dataset.cat === c.dataset.cat;
+        a.hidden = !show; if (show) n++;
+      });
+      $('#news-list').classList.toggle('is-filtered', !!c.dataset.cat);
+      $('#news-empty').hidden = n > 0;
+    });
+    $$('.js-share-fb').forEach(function (a) { a.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href.split('#')[0]); });
+    $$('.js-copy-link').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var url = location.href.split('#')[0];
+        var done = function () { toast('Đã sao chép liên kết', url); };
+        if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, done); else done();
+      });
+    });
+  }
+
   /* ---------------- INIT ---------------- */
   buildQuickView();
   applyContact();
-  if (isHome) {
+  if ($('#ptable-d') || $('#stable-d')) {
     renderTicker();
     renderTables();
     stamp();
+    initCalc();
     loadPrices();
-    if (location.hash === '#gia-bac') setTimeout(function () { smoothTo('#gia-bac'); }, 60);
+  }
+  if ($('#pgrid-3')) {
     renderProducts();
     initCarousel();
   }
+  // Mở trang kèm #mục (vd /bang-gia/#gia-bac) -> cuộn tới mục đó
+  if (location.hash.length > 1 && $(location.hash)) setTimeout(function () { smoothTo(location.hash); }, 80);
   renderMenuProducts();
   renderMega();
   initTopnav();
   initOverlayHeader();
   initFeatured();
   initShop();
+  initNews();
 })();
