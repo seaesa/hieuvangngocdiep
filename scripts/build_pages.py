@@ -67,7 +67,7 @@ SILVER = section(HOME, '<section id="gia-bac"')
 
 def calculator(metal):
     gold = metal == 'gold'
-    name, unit = ('Vàng', 'Chỉ') if gold else ('Bạc', 'Lượng')
+    name, unit = ('Vàng', 'Chỉ') if gold else ('Bạc', 'Chỉ')
     other = ('/may-tinh-gia-bac/', 'Máy tính giá bạc') if gold else ('/may-tinh-gia-vang/', 'Máy tính giá vàng')
     return '''    <section class="calc-sec" id="may-tinh">
       <div class="container calc-wrap">
@@ -124,7 +124,7 @@ TOOLS = '''    <section class="tools-sec">
           </a>
           <a href="/may-tinh-gia-bac/" class="tool tool--silver">
             <span class="tool__icon"><svg class="i" stroke-width="1.75"><use href="#i-coins"/></svg></span>
-            <span class="tool__body"><b>Máy tính giá bạc</b><small>Tính nhanh giá trị mua vào / bán ra theo lượng</small></span>
+            <span class="tool__body"><b>Máy tính giá bạc</b><small>Tính nhanh giá trị trang sức bạc theo chỉ</small></span>
             <svg class="i i-20 tool__go" stroke-width="2"><use href="#i-arrow-right"/></svg>
           </a>
         </div>
@@ -189,7 +189,7 @@ POSTS = [
   <li><strong>Tích trữ, đầu tư:</strong> chọn bạc 999 dạng miếng, thỏi — giá bám sát giá bạc thị trường.</li>
   <li><strong>Đeo hằng ngày:</strong> chọn trang sức bạc 925 — bền, nhiều kiểu dáng.</li>
 </ul>
-<blockquote>Xem giá bạc tham khảo trong ngày tại trang <a href="/bang-gia/#gia-bac">Bảng giá</a> hoặc tính nhanh bằng <a href="/may-tinh-gia-bac/">máy tính giá bạc</a>.</blockquote>
+<blockquote>Xem giá bạc trang sức tham khảo trong ngày tại trang <a href="/bang-gia/#gia-bac">Bảng giá</a> hoặc tính nhanh bằng <a href="/may-tinh-gia-bac/">máy tính giá bạc</a>.</blockquote>
 '''),
     dict(slug='cach-bao-quan-trang-suc-vang-bac-luon-sang-bong', cat='kien-thuc', date='25/09/2026', cover='bao-quan-trang-suc.jpg',
          title='7 cách bảo quản trang sức vàng, bạc luôn sáng bóng như mới',
@@ -411,7 +411,7 @@ def build_prices():
              'Giá vàng, bạc tham khảo cập nhật mỗi khi tải trang. Giá giao dịch thực tế theo bảng niêm yết tại cửa hàng.', 'shop-hero--compact'),
        GOLD, SILVER, TOOLS)
     page('bang-gia/index.html', 'Bảng Giá Vàng & Bạc Hôm Nay | Hiệu Vàng Ngọc Diệp',
-         'Bảng giá vàng 9999, 98, 96, nữ trang 98, 610 và giá bạc 999 hôm nay tại Hiệu Vàng Ngọc Diệp – Đà Nẵng.',
+         'Bảng giá vàng 9999, 98, 96, nữ trang 98, 610 và giá bạc trang sức hôm nay tại Hiệu Vàng Ngọc Diệp – Đà Nẵng.',
          main, active='/bang-gia/', page_id='prices')
 
     main = '''    <main class="price-page">
@@ -428,10 +428,10 @@ def build_prices():
 %s%s
 %s    </main>
 ''' % (hero([('Bảng giá', '/bang-gia/'), ('Máy tính giá bạc', None)], 'Máy Tính Giá <span class="silver-text">Bạc</span>',
-             'Xem bảng giá bạc hôm nay và tính nhanh số tiền khi mua, bán bạc.', 'shop-hero--compact'),
+             'Xem giá bạc trang sức hôm nay và tính nhanh số tiền khi mua, bán trang sức bạc.', 'shop-hero--compact'),
        SILVER, calculator('silver'))
     page('may-tinh-gia-bac/index.html', 'Máy Tính Giá Bạc | Hiệu Vàng Ngọc Diệp',
-         'Tính nhanh giá trị mua vào, bán ra bạc 999 theo bảng giá hiện tại tại Hiệu Vàng Ngọc Diệp.',
+         'Tính nhanh giá trị mua vào, bán ra trang sức bạc 925, bạc ta theo bảng giá hiện tại tại Hiệu Vàng Ngọc Diệp.',
          main, page_id='calc')
 
 

@@ -11,10 +11,10 @@
     { id: 'NT980', name: 'Nữ Trang 98', buy: 13760000, sell: 14050000 },
     { id: '610', name: 'Vàng 610', buy: 8580000, sell: 9000000 }
   ];
-  // Bảng giá bạc (VNĐ / lượng 37,5g) — số mặc định; khi mở trang sẽ được thay bằng giá quy đổi từ API
+  // Bảng giá bạc trang sức (VNĐ / chỉ 3,75g) — số mặc định; khi mở trang sẽ được thay bằng giá quy đổi từ API
   var SILVER_PRICES = [
-    { id: 'AG999', name: 'Bạc 999 (miếng, thỏi)', buy: 2138000, sell: 2204000 },
-    { id: 'AG999MN', name: 'Bạc mỹ nghệ 999', buy: 2138000, sell: 2515000 }
+    { id: 'AG925', name: 'Bạc trang sức 925 (bạc Ý)', buy: 174000, sell: 177000 },
+    { id: 'AG999TS', name: 'Bạc trang sức 999 (bạc ta)', buy: 189000, sell: 192000 }
   ];
   var SILVER_UPDATED_AT = '18:00 06/10/2026';
 
@@ -169,7 +169,7 @@
       return '<span class="ticker__item"><span class="ticker__name' + (cls || '') + '">' + name + '</span><span class="ticker__val">' + fmt(val) + '</span></span>';
     };
     var one = PRICES.map(function (p) { return item(p.name, p.sell); }).join('') +
-      SILVER_PRICES.slice(0, 1).map(function (p) { return item('Bạc 999 / lượng', p.sell, ' ticker__name--silver'); }).join('');
+      SILVER_PRICES.slice(0, 1).map(function (p) { return item('Bạc trang sức 925', p.sell, ' ticker__name--silver'); }).join('');
     $('#ticker').innerHTML = one + one; // nhân đôi để chạy vòng liền mạch (-50%)
   }
 
@@ -219,12 +219,12 @@
       var vnd = r[2].rates.VND, perGram = function (usdOz) { return usdOz * vnd / 31.1035; };
       var round = function (n) { return Math.round(n / 1000) * 1000; };
       var chi = perGram(r[0].price) * 3.75;   // 1 chỉ vàng 999.9
-      var luong = perGram(r[1].price) * 37.5; // 1 lượng bạc 999
+      var chiBac = perGram(r[1].price) * 3.75; // 1 chỉ bạc nguyên chất
       var row = function (p, base, k) { p.sell = round(base * k); p.buy = round(base * k * 0.985); };
       var GOLD_K = { '9999': 1, '980': 0.98, '960': 0.96, 'NT980': 0.98, '610': 0.61 };
       PRICES.forEach(function (p) { row(p, chi, GOLD_K[p.id] || 1); });
-      var SILVER_K = { AG999: 1, AG999MN: 1.1 };
-      SILVER_PRICES.forEach(function (p) { row(p, luong, SILVER_K[p.id] || 1); });
+      var SILVER_K = { AG925: 0.925, AG999TS: 0.999 }; // theo hàm lượng bạc
+      SILVER_PRICES.forEach(function (p) { row(p, chiBac, SILVER_K[p.id] || 1); });
       var d = new Date(), pad = function (n) { return String(n).padStart(2, '0'); };
       PRICES_UPDATED_AT = SILVER_UPDATED_AT = pad(d.getHours()) + ':' + pad(d.getMinutes()) + ' ' + pad(d.getDate()) + '/' + pad(d.getMonth() + 1) + '/' + d.getFullYear();
       renderTables(); renderTicker(); stamp(); renderCalc();

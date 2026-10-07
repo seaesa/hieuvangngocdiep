@@ -1076,11 +1076,11 @@ html:not(.light) .refresh__text { color: #fff; }
 
 /* ---------- Logo ---------- */
 .hdr__logo, .hdr__logo-m img {
-  display: block; width: auto; border-radius: 10px; background: #fff;
-  box-shadow: 0 2px 8px -2px rgb(60 35 5 / .35);
+  display: block; width: auto; background: none;
+  filter: drop-shadow(0 1px 1px rgb(60 35 5 / .25));
 }
-.hdr__logo { height: 52px; margin: -6px 0; }
-.hdr__logo-m img { height: 48px; }
+.hdr__logo { height: 64px; margin: -12px 0; }
+.hdr__logo-m img { height: 58px; }
 .hdr__inner--m { position: relative; }
 .hdr__logo-m { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: block; }
 .drawer__id { display: flex; align-items: center; gap: 12px; min-width: 0; }
