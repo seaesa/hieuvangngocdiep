@@ -1042,6 +1042,30 @@
     });
   }
 
+  /* ---------------- FORM LIÊN HỆ (demo: chưa gửi lên server) ---------------- */
+  function initContactForm() {
+    var form = $('#contact-form');
+    if (!form) return;
+    var err = $('#cf-err');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var name = $('#cf-name').value.trim(), phone = $('#cf-phone').value.replace(/[\s.]/g, '');
+      var msg = !name ? 'Vui lòng nhập họ và tên.' : !/^(\+?84|0)\d{9,10}$/.test(phone) ? 'Số điện thoại chưa đúng, vui lòng kiểm tra lại.' : '';
+      err.textContent = msg; err.hidden = !msg;
+      if (msg) { (name ? $('#cf-phone') : $('#cf-name')).focus(); return; }
+      var btn = $('.cform__submit', form);
+      btn.disabled = true; btn.classList.add('is-loading');
+      setTimeout(function () {
+        $('#cf-done-name').textContent = name;
+        $('#cf-done-phone').textContent = $('#cf-phone').value.trim();
+        form.hidden = true; $('#contact-done').hidden = false;
+        btn.disabled = false; btn.classList.remove('is-loading');
+        form.reset();
+      }, 700);
+    });
+    $('#cf-again').addEventListener('click', function () { $('#contact-done').hidden = true; form.hidden = false; $('#cf-name').focus(); });
+  }
+
   /* ---------------- INIT ---------------- */
   buildQuickView();
   applyContact();
@@ -1065,4 +1089,5 @@
   initFeatured();
   initShop();
   initNews();
+  initContactForm();
 })();

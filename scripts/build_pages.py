@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Dựng các trang: /bang-gia/, /may-tinh-gia-vang/, /may-tinh-gia-bac/, /tin-tuc/ và từng bài /tin-tuc/<slug>/.
+"""Dựng các trang: /bang-gia/, /may-tinh-gia-vang/, /may-tinh-gia-bac/, /lien-he/, /tin-tuc/ và từng bài /tin-tuc/<slug>/.
 
 Khung trang (head, header, menu, chat, nút nổi, drawer) lấy từ san-pham/index.html để mọi trang đồng bộ.
 Khối bảng giá vàng / bạc lấy từ index.html (trang chủ).
@@ -435,7 +435,74 @@ def build_prices():
          main, page_id='calc')
 
 
+# ---------------------------------------------------------------- liên hệ
+MAP_Q = '94-96 Lý Thái Tổ, Thanh Khê, Đà Nẵng'
+
+
+def build_contact():
+    from urllib.parse import quote_plus
+    cards = HOME[HOME.index('<div class="contact-grid">'): HOME.index('<div class="footer__bottom">')].rstrip()
+    cards = cards[:cards.rindex('</div>') + len('</div>')]
+    main = '''    <main class="contact-page">
+%(hero)s      <div class="container contact-body">
+        <div class="contact-quick">
+          <a href="#" data-contact-link="hotline" class="cq"><span class="cq__icon"><svg class="i i-20" stroke-width="2"><use href="#i-phone-call"/></svg></span><span><b>Gọi ngay</b><small data-contact="hotline">0905 887 044</small></span></a>
+          <a href="#" data-contact-link="zalo" class="cq"><span class="cq__icon cq__icon--zalo"><svg width="28" height="28" aria-hidden="true"><use href="#i-zalo"/></svg></span><span><b>Nhắn Zalo</b><small>Phản hồi nhanh trong giờ mở cửa</small></span></a>
+          <a href="#" data-contact-link="address" class="cq"><span class="cq__icon"><svg class="i i-20" stroke-width="2"><use href="#i-map-pin"/></svg></span><span><b>Chỉ đường</b><small>Mở Google Maps</small></span></a>
+          <a href="#" data-contact-link="facebook" class="cq"><span class="cq__icon"><svg class="i i-20" stroke-width="2"><use href="#i-facebook"/></svg></span><span><b>Fanpage</b><small>Cập nhật mẫu mới mỗi ngày</small></span></a>
+        </div>
+
+        <div class="contact-main">
+          <section class="contact-info" aria-labelledby="ct-info">
+            <h2 class="contact-h" id="ct-info">Thông Tin <span class="gold-text">Cửa Hàng</span></h2>
+            <p class="contact-lead">Hiệu Vàng Ngọc Diệp — Since 1990. Chuyên mua bán vàng 24K – 18K, gia công trang sức vàng bạc. Rất hân hạnh được đón tiếp Quý khách.</p>
+            %(cards)s
+          </section>
+
+          <section class="contact-form-card" aria-labelledby="ct-form">
+            <h2 class="contact-h" id="ct-form">Gửi Yêu Cầu <span class="gold-text">Tư Vấn</span></h2>
+            <p class="contact-lead">Để lại thông tin, nhân viên Ngọc Diệp sẽ gọi lại cho Quý khách trong thời gian sớm nhất.</p>
+            <form class="cform" id="contact-form" novalidate>
+              <div class="cform__row">
+                <div class="calc-field"><label for="cf-name">Họ và tên *</label><input id="cf-name" type="text" placeholder="Nguyễn Văn A" autocomplete="name" required /></div>
+                <div class="calc-field"><label for="cf-phone">Số điện thoại *</label><input id="cf-phone" type="tel" inputmode="tel" placeholder="09xxxxxxxx" autocomplete="tel" required /></div>
+              </div>
+              <div class="calc-field">
+                <label for="cf-need">Nhu cầu</label>
+                <div class="calc-select"><select id="cf-need">
+                  <option>Mua vàng / trang sức</option><option>Bán lại vàng</option><option>Gia công trang sức theo yêu cầu</option>
+                  <option>Tư vấn trang sức cưới</option><option>Quà tặng vàng phong thuỷ</option><option>Khác</option>
+                </select><svg class="i i-16" stroke-width="2"><use href="#i-chevron-down"/></svg></div>
+              </div>
+              <div class="calc-field"><label for="cf-msg">Nội dung</label><textarea id="cf-msg" rows="4" placeholder="Mẫu trang sức, trọng lượng, thời gian mong muốn…"></textarea></div>
+              <p class="cform__err" id="cf-err" hidden></p>
+              <button type="submit" class="btn-gold cform__submit"><svg class="i i-16" stroke-width="2"><use href="#i-send"/></svg>&nbsp;Gửi yêu cầu</button>
+              <p class="cform__note">Thông tin của Quý khách chỉ dùng để liên hệ tư vấn, không chia sẻ cho bên thứ ba.</p>
+            </form>
+            <div class="cform-done" id="contact-done" hidden>
+              <span class="cform-done__icon"><svg class="i i-20" stroke-width="2.5"><use href="#i-check"/></svg></span>
+              <b>Đã gửi yêu cầu!</b>
+              <p>Cảm ơn <span id="cf-done-name"></span>. Nhân viên Hiệu Vàng Ngọc Diệp sẽ liên hệ lại qua số <span id="cf-done-phone"></span> trong thời gian sớm nhất.</p>
+              <button type="button" class="btn-outline" id="cf-again">Gửi yêu cầu khác</button>
+            </div>
+          </section>
+        </div>
+
+        <section class="contact-map" aria-label="Bản đồ đường đi">
+          <iframe title="Bản đồ Hiệu Vàng Ngọc Diệp – %(mapq)s" src="https://www.google.com/maps?q=%(mapenc)s&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+        </section>
+      </div>
+    </main>
+''' % dict(hero=hero([('Liên hệ', None)], 'Liên Hệ <span class="gold-text">Ngọc Diệp</span>',
+                        '94-96 Lý Thái Tổ, phường Thanh Khê, TP. Đà Nẵng · Mở cửa tất cả các ngày trong tuần.', 'shop-hero--compact'),
+              cards=cards, mapq=MAP_Q, mapenc=quote_plus('Hiệu Vàng Ngọc Diệp, ' + MAP_Q))
+    page('lien-he/index.html', 'Liên Hệ | Hiệu Vàng Ngọc Diệp',
+         'Liên hệ Hiệu Vàng Ngọc Diệp – 94-96 Lý Thái Tổ, Thanh Khê, Đà Nẵng. Hotline / Zalo 0905 887 044.',
+         main, active='/lien-he/', page_id='contact')
+
+
 if __name__ == '__main__':
     print('Dựng trang:')
     build_prices()
+    build_contact()
     build_news()
