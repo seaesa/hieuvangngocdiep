@@ -1341,3 +1341,18 @@ html:not(.light) .ncat--san-pham { color: #c3c9d2; }
 .contact-map iframe { display: block; width: 100%; height: 380px; border: 0; }
 @media (min-width: 640px) { .contact-map iframe { height: 460px; } }
 html:not(.light) .contact-map iframe { filter: invert(.9) hue-rotate(180deg) saturate(.6); }
+
+/* Logo trên tên thương hiệu ở banner: tô cùng dải vàng ánh kim với chữ, không làm lệch vị trí chữ */
+.hero__mark {
+  position: absolute; left: 50%; bottom: calc(100% + .14em);
+  /* cao 1.12em, nhưng không vượt quá khoảng trống phía trên chữ (hero cao 92vh, chữ đặt theo vị trí trong ảnh) */
+  --text-top: calc(46vh + (var(--ty) - var(--ih) / 2) * var(--s) - 1.12 * var(--fs) * var(--s));
+  height: max(0px, min(1.12em, calc(var(--text-top) - .14em - 14px)));
+  aspect-ratio: 1.399; transform: translateX(-50%);
+  background: linear-gradient(180deg, #fff4cc 0%, #f1d27c 30%, #c9952f 60%, #f6dc8d 82%, #a9741c 100%);
+  -webkit-mask: url("/assets/img/logo-hero-mark.png") center / contain no-repeat;
+  mask: url("/assets/img/logo-hero-mark.png") center / contain no-repeat;
+  animation: heroMark 1s var(--ease-out-expo) .15s both;
+}
+@keyframes heroMark { from { opacity: 0; transform: translate(-50%, 12px) scale(.94); } to { opacity: 1; transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .hero__mark { animation: none; } }
